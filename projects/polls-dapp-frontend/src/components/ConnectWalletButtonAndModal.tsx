@@ -2,7 +2,7 @@ import { useWallet, Wallet, WalletId } from '@txnlab/use-wallet-react'
 import { useCallback, useMemo, useState } from 'react'
 import { ellipseAddress } from '../utils/ellipseAddress'
 import { getAlgodConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
-import Account from './Account'
+import Account from './template/Account'
 
 const ConnectWalletButtonAndModal = () => {
   const { wallets, activeAddress } = useWallet()

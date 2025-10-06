@@ -1,7 +1,7 @@
 import { Plus, Sparkles, X } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
-import Spinner from './Spinner'
+import Spinner from '../Spinner'
 
 interface CreatePageProps {
   onCreatePoll: (question: string, options: string[]) => Promise<void>

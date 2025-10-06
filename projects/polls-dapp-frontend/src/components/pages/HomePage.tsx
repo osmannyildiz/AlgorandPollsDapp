@@ -4,10 +4,10 @@ import { useWallet } from '@txnlab/use-wallet-react'
 import { PlusCircle } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
 import { Link } from 'react-router-dom'
-import { PollManagerFactory } from '../contracts/PollManager'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
-import PollCard from './PollCard'
-import PollSkeleton from './PollSkeleton'
+import { PollManagerFactory } from '../../contracts/PollManager'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../../utils/network/getAlgoClientConfigs'
+import PollCard from '../PollCard'
+import PollSkeleton from '../PollSkeleton'
 
 interface Option {
   id: string

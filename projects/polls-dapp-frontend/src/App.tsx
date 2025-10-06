@@ -4,8 +4,9 @@ import { enqueueSnackbar, SnackbarProvider } from 'notistack'
 import { useEffect, useState } from 'react'
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import ConnectWalletButtonAndModal from './components/ConnectWalletButtonAndModal'
-import CreatePage from './components/CreatePage'
-import HomePage from './components/HomePage'
+import CreatePage from './components/pages/CreatePage'
+import HomePage from './components/pages/HomePage'
+import Home from './components/template/Home'
 import { Poll } from './types'
 import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from './utils/network/getAlgoClientConfigs'
 
@@ -214,6 +215,7 @@ export default function App() {
             <Routes>
               <Route path="/" element={<HomePage polls={polls} onVote={handleVote} isLoading={isLoading} />} />
               <Route path="/create" element={<CreatePage onCreatePoll={handleCreatePoll} />} />
+              <Route path="/template" element={<Home />} />
             </Routes>
           </main>
         </div>
