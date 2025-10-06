@@ -1,7 +1,7 @@
 import { Plus, Sparkles, X } from 'lucide-react'
+import { enqueueSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
 import Spinner from './Spinner'
-import Toast from './Toast'
 
 interface CreatePageProps {
   onCreatePoll: (question: string, options: string[]) => Promise<void>
@@ -12,7 +12,6 @@ function CreatePage({ onCreatePoll }: CreatePageProps) {
   const [options, setOptions] = useState(['', ''])
   const [errors, setErrors] = useState<{ question?: string; options?: string }>({})
   const [isCreating, setIsCreating] = useState(false)
-  const [error, setError] = useState<string | null>(null)
   const [isFormValid, setIsFormValid] = useState(false)
 
   const handleAddOption = () => {
@@ -75,12 +74,11 @@ function CreatePage({ onCreatePoll }: CreatePageProps) {
 
     if (validateForm() && !isCreating) {
       setIsCreating(true)
-      setError(null)
       try {
         const filledOptions = options.filter((opt) => opt.trim())
         await onCreatePoll(question.trim(), filledOptions)
       } catch (err) {
-        setError(err instanceof Error ? err.message : 'Failed to create poll. Please try again.')
+        enqueueSnackbar(err instanceof Error ? err.message : 'Failed to create poll. Please try again.', { variant: 'error' })
       } finally {
         setIsCreating(false)
       }
@@ -176,8 +174,6 @@ function CreatePage({ onCreatePoll }: CreatePageProps) {
           {isCreating ? 'Creating Poll...' : 'Create Poll'}
         </button>
       </form>
-
-      {error && <Toast message={error} onClose={() => setError(null)} />}
     </div>
   )
 }

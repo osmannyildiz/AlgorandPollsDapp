@@ -1,5 +1,11 @@
+import { AlgorandClient } from '@algorandfoundation/algokit-utils'
+import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
+import { useWallet } from '@txnlab/use-wallet-react'
 import { PlusCircle } from 'lucide-react'
+import { enqueueSnackbar } from 'notistack'
 import { Link } from 'react-router-dom'
+import { PollManagerFactory } from '../contracts/PollManager'
+import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../utils/network/getAlgoClientConfigs'
 import PollCard from './PollCard'
 import PollSkeleton from './PollSkeleton'
 
@@ -24,6 +30,54 @@ interface HomePageProps {
 }
 
 function HomePage({ polls, onVote, isLoading }: HomePageProps) {
+  const { transactionSigner, activeAddress } = useWallet()
+
+  const algodConfig = getAlgodConfigFromViteEnvironment()
+  const indexerConfig = getIndexerConfigFromViteEnvironment()
+  const algorand = AlgorandClient.fromConfig({
+    algodConfig,
+    indexerConfig,
+  })
+  algorand.setDefaultSigner(transactionSigner)
+
+  const runHelloContract = async () => {
+    // Please note, in typical production scenarios,
+    // you wouldn't want to use deploy directly from your frontend.
+    // Instead, you would deploy your contract on your backend and reference it by id.
+    // Given the simplicity of the starter contract, we are deploying it on the frontend
+    // for demonstration purposes.
+    const factory = new PollManagerFactory({
+      defaultSender: activeAddress ?? undefined,
+      algorand,
+    })
+    const deployResult = await factory
+      .deploy({
+        onSchemaBreak: OnSchemaBreak.AppendApp,
+        onUpdate: OnUpdate.AppendApp,
+      })
+      .catch((e: Error) => {
+        enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
+        return undefined
+      })
+
+    if (!deployResult) {
+      return
+    }
+
+    const { appClient } = deployResult
+
+    const response = await appClient.send.hello({ args: { name: 'Osman' } }).catch((e: Error) => {
+      enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
+      return
+    })
+
+    if (!response) {
+      return
+    }
+
+    enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
+  }
+
   if (isLoading) {
     return (
       <div>
@@ -46,6 +100,13 @@ function HomePage({ polls, onVote, isLoading }: HomePageProps) {
       <div className="mb-8">
         <h1 className="text-4xl font-bold text-gray-800 mb-2">Active Polls</h1>
         <p className="text-gray-600">Vote on polls or create your own</p>
+        <button
+          type="button"
+          onClick={() => runHelloContract()}
+          className="mt-4 flex items-center gap-2 px-4 py-2 bg-violet-500/20 hover:bg-violet-500/30 text-violet-700 rounded-xl transition-all duration-300 backdrop-blur-sm border border-violet-300/50 font-medium disabled:cursor-not-allowed disabled:opacity-50"
+        >
+          Run Hello Contract
+        </button>
       </div>
 
       {polls.length === 0 ? (

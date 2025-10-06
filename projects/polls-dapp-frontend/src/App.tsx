@@ -1,11 +1,11 @@
 import { SupportedWallet, WalletId, WalletManager, WalletProvider } from '@txnlab/use-wallet-react'
 import { Home as HomeIcon, PlusCircle } from 'lucide-react'
-import { SnackbarProvider } from 'notistack'
+import { enqueueSnackbar, SnackbarProvider } from 'notistack'
 import { useEffect, useState } from 'react'
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
+import ConnectWalletButtonAndModal from './components/ConnectWalletButtonAndModal'
 import CreatePage from './components/CreatePage'
 import HomePage from './components/HomePage'
-import Toast from './components/Toast'
 import { Poll } from './types'
 import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from './utils/network/getAlgoClientConfigs'
 
@@ -56,7 +56,6 @@ export default function App() {
   const navigate = useNavigate()
   const [polls, setPolls] = useState<Poll[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [error, setError] = useState<string | null>(null)
   const [mockPolls] = useState<Poll[]>([
     {
       id: '1',
@@ -97,12 +96,11 @@ export default function App() {
 
   const fetchPolls = async () => {
     setIsLoading(true)
-    setError(null)
     try {
       await new Promise((resolve) => setTimeout(resolve, 800))
       setPolls([...mockPolls])
     } catch (err) {
-      setError('Failed to load polls. Please try again.')
+      enqueueSnackbar(`Failed to load polls. Please try again.`, { variant: 'error' })
     } finally {
       setIsLoading(false)
     }
@@ -205,19 +203,19 @@ export default function App() {
                     <span className="font-medium">Create</span>
                   </Link>
                 </div>
+
+                <ConnectWalletButtonAndModal />
               </div>
             </div>
           </nav>
 
           {/* Main Content */}
-          <main className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+          <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <Routes>
               <Route path="/" element={<HomePage polls={polls} onVote={handleVote} isLoading={isLoading} />} />
               <Route path="/create" element={<CreatePage onCreatePoll={handleCreatePoll} />} />
             </Routes>
           </main>
-
-          {error && <Toast message={error} onClose={() => setError(null)} />}
         </div>
       </WalletProvider>
     </SnackbarProvider>
