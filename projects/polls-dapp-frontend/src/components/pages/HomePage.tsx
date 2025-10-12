@@ -1,10 +1,10 @@
 import { AlgorandClient } from '@algorandfoundation/algokit-utils'
-import { OnSchemaBreak, OnUpdate } from '@algorandfoundation/algokit-utils/types/app'
 import { useWallet } from '@txnlab/use-wallet-react'
 import { PlusCircle } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
 import { Link } from 'react-router-dom'
-import { PollManagerFactory } from '../../contracts/PollManager'
+import { POLL_MANAGER_CREATOR_ADDRESS } from '../../contracts/config'
+import { PollManagerClient } from '../../contracts/PollManager'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../../utils/network/getAlgoClientConfigs'
 import PollCard from '../PollCard'
 import PollSkeleton from '../PollSkeleton'
@@ -41,30 +41,11 @@ function HomePage({ polls, onVote, isLoading }: HomePageProps) {
   algorand.setDefaultSigner(transactionSigner)
 
   const runHelloContract = async () => {
-    // Please note, in typical production scenarios,
-    // you wouldn't want to use deploy directly from your frontend.
-    // Instead, you would deploy your contract on your backend and reference it by id.
-    // Given the simplicity of the starter contract, we are deploying it on the frontend
-    // for demonstration purposes.
-    const factory = new PollManagerFactory({
+    const appClient = await PollManagerClient.fromCreatorAndName({
+      creatorAddress: POLL_MANAGER_CREATOR_ADDRESS,
       defaultSender: activeAddress ?? undefined,
       algorand,
     })
-    const deployResult = await factory
-      .deploy({
-        onSchemaBreak: OnSchemaBreak.AppendApp,
-        onUpdate: OnUpdate.AppendApp,
-      })
-      .catch((e: Error) => {
-        enqueueSnackbar(`Error deploying the contract: ${e.message}`, { variant: 'error' })
-        return undefined
-      })
-
-    if (!deployResult) {
-      return
-    }
-
-    const { appClient } = deployResult
 
     const response = await appClient.send.hello({ args: { name: 'Osman' } }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
