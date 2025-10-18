@@ -72,7 +72,7 @@ const ConnectWalletButtonAndModal = () => {
                   <button
                     key={`provider-${wallet.id}`}
                     type="button"
-                    className="btn border-teal-800 border-1 m-2"
+                    className="flex gap-2 items-center bg-gray-200 m-2 p-2 rounded-md"
                     onClick={async () => {
                       await wallet.connect()
                       setIsModalOpen(false)

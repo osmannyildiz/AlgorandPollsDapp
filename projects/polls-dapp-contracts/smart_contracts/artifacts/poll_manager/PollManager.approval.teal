@@ -1,36 +1,180 @@
 #pragma version 10
 #pragma typetrack false
 
-// algopy.arc4.ARC4Contract.approval_program() -> uint64:
+// smart_contracts.poll_manager.contract.PollManager.__algopy_entrypoint_with_init() -> uint64:
 main:
-    // smart_contracts/poll_manager/contract.py:5
+    intcblock 1 0 32 52
+    bytecblock "polls" "next_poll_id" 0x151f7c75
+    txn ApplicationID
+    bnz main_after_if_else@2
+    // smart_contracts/poll_manager/contract.py:22
+    // self.next_poll_id = arc4.UInt64(1)
+    bytec_1 // "next_poll_id"
+    pushbytes 0x0000000000000001
+    app_global_put
+
+main_after_if_else@2:
+    // smart_contracts/poll_manager/contract.py:19
     // class PollManager(ARC4Contract):
     txn NumAppArgs
-    bz main_bare_routing@6
-    pushbytes 0x02bece11 // method "hello(string)string"
+    bz main_bare_routing@13
+    pushbytess 0x02bece11 0x55240f17 0x5502a79b 0x44385ae5 0xa6b19f61 0x172054db 0xd9facc2f 0x86926aba // method "hello(string)string", method "create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void", method "vote_option_1(uint64,address)void", method "vote_option_2(uint64,address)void", method "vote_option_3(uint64,address)void", method "vote_option_4(uint64,address)void", method "vote_option_5(uint64,address)void", method "did_vote(uint64,address)bool"
     txna ApplicationArgs 0
-    match main_hello_route@3
+    match main_hello_route@5 main_create_poll_route@6 main_vote_option_1_route@7 main_vote_option_2_route@8 main_vote_option_3_route@9 main_vote_option_4_route@10 main_vote_option_5_route@11 main_did_vote_route@12
 
-main_after_if_else@10:
-    // smart_contracts/poll_manager/contract.py:5
+main_after_if_else@15:
+    // smart_contracts/poll_manager/contract.py:19
     // class PollManager(ARC4Contract):
-    pushint 0 // 0
+    intc_1 // 0
     return
 
-main_hello_route@3:
-    // smart_contracts/poll_manager/contract.py:6
-    // @abimethod()
+main_did_vote_route@12:
+    // smart_contracts/poll_manager/contract.py:66
+    // @arc4.abimethod
     txn OnCompletion
     !
     assert // OnCompletion is not NoOp
     txn ApplicationID
     assert // can only call when not creating
-    // smart_contracts/poll_manager/contract.py:5
+    // smart_contracts/poll_manager/contract.py:19
+    // class PollManager(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    // smart_contracts/poll_manager/contract.py:66
+    // @arc4.abimethod
+    callsub did_vote
+    pushbytes 0x00
+    intc_1 // 0
+    uncover 2
+    setbit
+    bytec_2 // 0x151f7c75
+    swap
+    concat
+    log
+    intc_0 // 1
+    return
+
+main_vote_option_5_route@11:
+    // smart_contracts/poll_manager/contract.py:60
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/poll_manager/contract.py:19
+    // class PollManager(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    // smart_contracts/poll_manager/contract.py:60
+    // @arc4.abimethod
+    callsub vote_option_5
+    intc_0 // 1
+    return
+
+main_vote_option_4_route@10:
+    // smart_contracts/poll_manager/contract.py:54
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/poll_manager/contract.py:19
+    // class PollManager(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    // smart_contracts/poll_manager/contract.py:54
+    // @arc4.abimethod
+    callsub vote_option_4
+    intc_0 // 1
+    return
+
+main_vote_option_3_route@9:
+    // smart_contracts/poll_manager/contract.py:48
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/poll_manager/contract.py:19
+    // class PollManager(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    // smart_contracts/poll_manager/contract.py:48
+    // @arc4.abimethod
+    callsub vote_option_3
+    intc_0 // 1
+    return
+
+main_vote_option_2_route@8:
+    // smart_contracts/poll_manager/contract.py:42
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/poll_manager/contract.py:19
+    // class PollManager(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    // smart_contracts/poll_manager/contract.py:42
+    // @arc4.abimethod
+    callsub vote_option_2
+    intc_0 // 1
+    return
+
+main_vote_option_1_route@7:
+    // smart_contracts/poll_manager/contract.py:36
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/poll_manager/contract.py:19
+    // class PollManager(ARC4Contract):
+    txna ApplicationArgs 1
+    txna ApplicationArgs 2
+    // smart_contracts/poll_manager/contract.py:36
+    // @arc4.abimethod
+    callsub vote_option_1
+    intc_0 // 1
+    return
+
+main_create_poll_route@6:
+    // smart_contracts/poll_manager/contract.py:28
+    // @arc4.abimethod
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/poll_manager/contract.py:19
+    // class PollManager(ARC4Contract):
+    txna ApplicationArgs 1
+    // smart_contracts/poll_manager/contract.py:28
+    // @arc4.abimethod
+    callsub create_poll
+    intc_0 // 1
+    return
+
+main_hello_route@5:
+    // smart_contracts/poll_manager/contract.py:24
+    // @arc4.abimethod()
+    txn OnCompletion
+    !
+    assert // OnCompletion is not NoOp
+    txn ApplicationID
+    assert // can only call when not creating
+    // smart_contracts/poll_manager/contract.py:19
     // class PollManager(ARC4Contract):
     txna ApplicationArgs 1
     extract 2 0
-    // smart_contracts/poll_manager/contract.py:6
-    // @abimethod()
+    // smart_contracts/poll_manager/contract.py:24
+    // @arc4.abimethod()
     callsub hello
     dup
     len
@@ -38,34 +182,476 @@ main_hello_route@3:
     extract 6 2
     swap
     concat
-    pushbytes 0x151f7c75
+    bytec_2 // 0x151f7c75
     swap
     concat
     log
-    pushint 1 // 1
+    intc_0 // 1
     return
 
-main_bare_routing@6:
-    // smart_contracts/poll_manager/contract.py:5
+main_bare_routing@13:
+    // smart_contracts/poll_manager/contract.py:19
     // class PollManager(ARC4Contract):
     txn OnCompletion
-    bnz main_after_if_else@10
+    bnz main_after_if_else@15
     txn ApplicationID
     !
     assert // can only call when creating
-    pushint 1 // 1
+    intc_0 // 1
     return
 
 
 // smart_contracts.poll_manager.contract.PollManager.hello(name: bytes) -> bytes:
 hello:
-    // smart_contracts/poll_manager/contract.py:6-7
-    // @abimethod()
+    // smart_contracts/poll_manager/contract.py:24-25
+    // @arc4.abimethod()
     // def hello(self, name: String) -> String:
     proto 1 1
-    // smart_contracts/poll_manager/contract.py:8
+    // smart_contracts/poll_manager/contract.py:26
     // return "Hello, " + name
     pushbytes "Hello, "
     frame_dig -1
     concat
     retsub
+
+
+// smart_contracts.poll_manager.contract.PollManager.create_poll(poll_data: bytes) -> void:
+create_poll:
+    // smart_contracts/poll_manager/contract.py:28-32
+    // @arc4.abimethod
+    // def create_poll(
+    //     self,
+    //     poll_data: PollData,
+    // ) -> None:
+    proto 1 0
+    // smart_contracts/poll_manager/contract.py:33
+    // self.box_map_struct[self.next_poll_id] = poll_data.copy()
+    intc_1 // 0
+    bytec_1 // "next_poll_id"
+    app_global_get_ex
+    assert // check self.next_poll_id exists
+    bytec_0 // "polls"
+    dig 1
+    concat
+    dup
+    box_del
+    pop
+    frame_dig -1
+    box_put
+    // smart_contracts/poll_manager/contract.py:34
+    // self.next_poll_id = arc4.UInt64(self.next_poll_id.native + 1)
+    btoi
+    intc_0 // 1
+    +
+    itob
+    bytec_1 // "next_poll_id"
+    swap
+    app_global_put
+    retsub
+
+
+// smart_contracts.poll_manager.contract.PollManager.vote_option_1(poll_id: bytes, caller: bytes) -> void:
+vote_option_1:
+    // smart_contracts/poll_manager/contract.py:36-37
+    // @arc4.abimethod
+    // def vote_option_1(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
+    proto 2 0
+    // smart_contracts/poll_manager/contract.py:38
+    // assert not self.did_vote(poll_id, caller), "Already voted"
+    frame_dig -2
+    frame_dig -1
+    callsub did_vote
+    !
+    assert // Already voted
+    // smart_contracts/poll_manager/contract.py:39
+    // self.box_map_struct[poll_id].option_1_votes = arc4.UInt64(self.box_map_struct[poll_id].option_1_votes.native + 1)
+    bytec_0 // "polls"
+    frame_dig -2
+    concat
+    dup
+    box_get
+    assert // check self.box_map_struct entry exists
+    dup
+    pushint 12 // 12
+    extract_uint64
+    intc_0 // 1
+    +
+    itob
+    replace2 12
+    dig 1
+    box_del
+    pop
+    dup2
+    box_put
+    // smart_contracts/poll_manager/contract.py:40
+    // self.box_map_struct[poll_id].voters.append(caller)
+    dup
+    intc_3 // 52
+    extract_uint16
+    dig 1
+    len
+    dig 2
+    dig 2
+    uncover 2
+    substring3
+    extract 2 0
+    frame_dig -1
+    concat
+    dup
+    len
+    intc_2 // 32
+    /
+    itob
+    extract 6 2
+    swap
+    concat
+    uncover 2
+    intc_1 // 0
+    uncover 3
+    extract3
+    swap
+    concat
+    dig 1
+    box_del
+    pop
+    box_put
+    retsub
+
+
+// smart_contracts.poll_manager.contract.PollManager.vote_option_2(poll_id: bytes, caller: bytes) -> void:
+vote_option_2:
+    // smart_contracts/poll_manager/contract.py:42-43
+    // @arc4.abimethod
+    // def vote_option_2(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
+    proto 2 0
+    // smart_contracts/poll_manager/contract.py:44
+    // assert not self.did_vote(poll_id, caller), "Already voted"
+    frame_dig -2
+    frame_dig -1
+    callsub did_vote
+    !
+    assert // Already voted
+    // smart_contracts/poll_manager/contract.py:45
+    // self.box_map_struct[poll_id].option_2_votes = arc4.UInt64(self.box_map_struct[poll_id].option_2_votes.native + 1)
+    bytec_0 // "polls"
+    frame_dig -2
+    concat
+    dup
+    box_get
+    assert // check self.box_map_struct entry exists
+    dup
+    pushint 20 // 20
+    extract_uint64
+    intc_0 // 1
+    +
+    itob
+    replace2 20
+    dig 1
+    box_del
+    pop
+    dup2
+    box_put
+    // smart_contracts/poll_manager/contract.py:46
+    // self.box_map_struct[poll_id].voters.append(caller)
+    dup
+    intc_3 // 52
+    extract_uint16
+    dig 1
+    len
+    dig 2
+    dig 2
+    uncover 2
+    substring3
+    extract 2 0
+    frame_dig -1
+    concat
+    dup
+    len
+    intc_2 // 32
+    /
+    itob
+    extract 6 2
+    swap
+    concat
+    uncover 2
+    intc_1 // 0
+    uncover 3
+    extract3
+    swap
+    concat
+    dig 1
+    box_del
+    pop
+    box_put
+    retsub
+
+
+// smart_contracts.poll_manager.contract.PollManager.vote_option_3(poll_id: bytes, caller: bytes) -> void:
+vote_option_3:
+    // smart_contracts/poll_manager/contract.py:48-49
+    // @arc4.abimethod
+    // def vote_option_3(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
+    proto 2 0
+    // smart_contracts/poll_manager/contract.py:50
+    // assert not self.did_vote(poll_id, caller), "Already voted"
+    frame_dig -2
+    frame_dig -1
+    callsub did_vote
+    !
+    assert // Already voted
+    // smart_contracts/poll_manager/contract.py:51
+    // self.box_map_struct[poll_id].option_3_votes = arc4.UInt64(self.box_map_struct[poll_id].option_3_votes.native + 1)
+    bytec_0 // "polls"
+    frame_dig -2
+    concat
+    dup
+    box_get
+    assert // check self.box_map_struct entry exists
+    dup
+    pushint 28 // 28
+    extract_uint64
+    intc_0 // 1
+    +
+    itob
+    replace2 28
+    dig 1
+    box_del
+    pop
+    dup2
+    box_put
+    // smart_contracts/poll_manager/contract.py:52
+    // self.box_map_struct[poll_id].voters.append(caller)
+    dup
+    intc_3 // 52
+    extract_uint16
+    dig 1
+    len
+    dig 2
+    dig 2
+    uncover 2
+    substring3
+    extract 2 0
+    frame_dig -1
+    concat
+    dup
+    len
+    intc_2 // 32
+    /
+    itob
+    extract 6 2
+    swap
+    concat
+    uncover 2
+    intc_1 // 0
+    uncover 3
+    extract3
+    swap
+    concat
+    dig 1
+    box_del
+    pop
+    box_put
+    retsub
+
+
+// smart_contracts.poll_manager.contract.PollManager.vote_option_4(poll_id: bytes, caller: bytes) -> void:
+vote_option_4:
+    // smart_contracts/poll_manager/contract.py:54-55
+    // @arc4.abimethod
+    // def vote_option_4(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
+    proto 2 0
+    // smart_contracts/poll_manager/contract.py:56
+    // assert not self.did_vote(poll_id, caller), "Already voted"
+    frame_dig -2
+    frame_dig -1
+    callsub did_vote
+    !
+    assert // Already voted
+    // smart_contracts/poll_manager/contract.py:57
+    // self.box_map_struct[poll_id].option_4_votes = arc4.UInt64(self.box_map_struct[poll_id].option_4_votes.native + 1)
+    bytec_0 // "polls"
+    frame_dig -2
+    concat
+    dup
+    box_get
+    assert // check self.box_map_struct entry exists
+    dup
+    pushint 36 // 36
+    extract_uint64
+    intc_0 // 1
+    +
+    itob
+    replace2 36
+    dig 1
+    box_del
+    pop
+    dup2
+    box_put
+    // smart_contracts/poll_manager/contract.py:58
+    // self.box_map_struct[poll_id].voters.append(caller)
+    dup
+    intc_3 // 52
+    extract_uint16
+    dig 1
+    len
+    dig 2
+    dig 2
+    uncover 2
+    substring3
+    extract 2 0
+    frame_dig -1
+    concat
+    dup
+    len
+    intc_2 // 32
+    /
+    itob
+    extract 6 2
+    swap
+    concat
+    uncover 2
+    intc_1 // 0
+    uncover 3
+    extract3
+    swap
+    concat
+    dig 1
+    box_del
+    pop
+    box_put
+    retsub
+
+
+// smart_contracts.poll_manager.contract.PollManager.vote_option_5(poll_id: bytes, caller: bytes) -> void:
+vote_option_5:
+    // smart_contracts/poll_manager/contract.py:60-61
+    // @arc4.abimethod
+    // def vote_option_5(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
+    proto 2 0
+    // smart_contracts/poll_manager/contract.py:62
+    // assert not self.did_vote(poll_id, caller), "Already voted"
+    frame_dig -2
+    frame_dig -1
+    callsub did_vote
+    !
+    assert // Already voted
+    // smart_contracts/poll_manager/contract.py:63
+    // self.box_map_struct[poll_id].option_5_votes = arc4.UInt64(self.box_map_struct[poll_id].option_5_votes.native + 1)
+    bytec_0 // "polls"
+    frame_dig -2
+    concat
+    dup
+    box_get
+    assert // check self.box_map_struct entry exists
+    dup
+    pushint 44 // 44
+    extract_uint64
+    intc_0 // 1
+    +
+    itob
+    replace2 44
+    dig 1
+    box_del
+    pop
+    dup2
+    box_put
+    // smart_contracts/poll_manager/contract.py:64
+    // self.box_map_struct[poll_id].voters.append(caller)
+    dup
+    intc_3 // 52
+    extract_uint16
+    dig 1
+    len
+    dig 2
+    dig 2
+    uncover 2
+    substring3
+    extract 2 0
+    frame_dig -1
+    concat
+    dup
+    len
+    intc_2 // 32
+    /
+    itob
+    extract 6 2
+    swap
+    concat
+    uncover 2
+    intc_1 // 0
+    uncover 3
+    extract3
+    swap
+    concat
+    dig 1
+    box_del
+    pop
+    box_put
+    retsub
+
+
+// smart_contracts.poll_manager.contract.PollManager.did_vote(poll_id: bytes, caller: bytes) -> uint64:
+did_vote:
+    // smart_contracts/poll_manager/contract.py:66-67
+    // @arc4.abimethod
+    // def did_vote(self, poll_id: arc4.UInt64, caller: arc4.Address) -> bool:
+    proto 2 1
+    pushbytes ""
+    // smart_contracts/poll_manager/contract.py:68
+    // found = False
+    intc_1 // 0
+    // smart_contracts/poll_manager/contract.py:69
+    // for voter in self.box_map_struct[poll_id].voters:
+    bytec_0 // "polls"
+    frame_dig -2
+    concat
+    box_get
+    assert // check self.box_map_struct entry exists
+    dup
+    intc_3 // 52
+    extract_uint16
+    dig 1
+    len
+    substring3
+    dup
+    intc_1 // 0
+    extract_uint16
+    intc_1 // 0
+
+did_vote_for_header@1:
+    // smart_contracts/poll_manager/contract.py:69
+    // for voter in self.box_map_struct[poll_id].voters:
+    frame_dig 4
+    frame_dig 3
+    <
+    frame_dig 1
+    frame_bury 0
+    bz did_vote_after_for@6
+    frame_dig 2
+    extract 2 0
+    frame_dig 4
+    intc_2 // 32
+    *
+    intc_2 // 32
+    extract3 // on error: Index access is out of bounds
+    // smart_contracts/poll_manager/contract.py:70
+    // if caller == voter:
+    frame_dig -1
+    ==
+    bz did_vote_after_if_else@4
+    // smart_contracts/poll_manager/contract.py:71
+    // found = True
+    intc_0 // 1
+    frame_bury 0
+
+did_vote_after_for@6:
+    // smart_contracts/poll_manager/contract.py:73
+    // return found
+    retsub
+
+did_vote_after_if_else@4:
+    frame_dig 4
+    intc_0 // 1
+    +
+    frame_bury 4
+    b did_vote_for_header@1

@@ -19,7 +19,7 @@ from algosdk.v2client.models import SimulateTraceConfig
 import algokit_utils
 from algokit_utils import AlgorandClient as _AlgoKitAlgorandClient
 
-_APP_SPEC_JSON = r"""{"arcs": [22, 28], "bareActions": {"call": [], "create": ["NoOp"]}, "methods": [{"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "string", "name": "name"}], "name": "hello", "returns": {"type": "string"}, "events": [], "readonly": false, "recommendations": {}}], "name": "PollManager", "state": {"keys": {"box": {}, "global": {}, "local": {}}, "maps": {"box": {}, "global": {}, "local": {}}, "schema": {"global": {"bytes": 0, "ints": 0}, "local": {"bytes": 0, "ints": 0}}}, "structs": {}, "byteCode": {"approval": "CjEbQQA0gAQCvs4RNhoAjgEAA4EAQzEZFEQxGEQ2GgFXAgCIACBJFRZXBgJMUIAEFR98dUxQsIEBQzEZQP/UMRgURIEBQ4oBAYAHSGVsbG8sIIv/UIk=", "clear": "CoEBQw=="}, "events": [], "networks": {}, "source": {"approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuYXBwcm92YWxfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4biBOdW1BcHBBcmdzCiAgICBieiBtYWluX2JhcmVfcm91dGluZ0A2CiAgICBwdXNoYnl0ZXMgMHgwMmJlY2UxMSAvLyBtZXRob2QgImhlbGxvKHN0cmluZylzdHJpbmciCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAwCiAgICBtYXRjaCBtYWluX2hlbGxvX3JvdXRlQDMKCm1haW5fYWZ0ZXJfaWZfZWxzZUAxMDoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHB1c2hpbnQgMCAvLyAwCiAgICByZXR1cm4KCm1haW5faGVsbG9fcm91dGVAMzoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NgogICAgLy8gQGFiaW1ldGhvZCgpCiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGV4dHJhY3QgMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjYKICAgIC8vIEBhYmltZXRob2QoKQogICAgY2FsbHN1YiBoZWxsbwogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIHB1c2hieXRlcyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgcHVzaGludCAxIC8vIDEKICAgIHJldHVybgoKbWFpbl9iYXJlX3JvdXRpbmdANjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgIGJueiBtYWluX2FmdGVyX2lmX2Vsc2VAMTAKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICAhCiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIGNyZWF0aW5nCiAgICBwdXNoaW50IDEgLy8gMQogICAgcmV0dXJuCgoKLy8gc21hcnRfY29udHJhY3RzLnBvbGxfbWFuYWdlci5jb250cmFjdC5Qb2xsTWFuYWdlci5oZWxsbyhuYW1lOiBieXRlcykgLT4gYnl0ZXM6CmhlbGxvOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo2LTcKICAgIC8vIEBhYmltZXRob2QoKQogICAgLy8gZGVmIGhlbGxvKHNlbGYsIG5hbWU6IFN0cmluZykgLT4gU3RyaW5nOgogICAgcHJvdG8gMSAxCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjgKICAgIC8vIHJldHVybiAiSGVsbG8sICIgKyBuYW1lCiAgICBwdXNoYnl0ZXMgIkhlbGxvLCAiCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgcmV0c3ViCg==", "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuY2xlYXJfc3RhdGVfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4K"}, "sourceInfo": {"approval": {"pcOffsetMethod": "none", "sourceInfo": [{"pc": [25], "errorMessage": "OnCompletion is not NoOp"}, {"pc": [66], "errorMessage": "can only call when creating"}, {"pc": [28], "errorMessage": "can only call when not creating"}]}, "clear": {"pcOffsetMethod": "none", "sourceInfo": []}}, "templateVariables": {}}"""
+_APP_SPEC_JSON = r"""{"arcs": [22, 28], "bareActions": {"call": [], "create": ["NoOp"]}, "methods": [{"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "string", "name": "name"}], "name": "hello", "returns": {"type": "string"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "(string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[])", "name": "poll_data", "struct": "PollData"}], "name": "create_poll", "returns": {"type": "void"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "uint64", "name": "poll_id"}, {"type": "address", "name": "caller"}], "name": "vote_option_1", "returns": {"type": "void"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "uint64", "name": "poll_id"}, {"type": "address", "name": "caller"}], "name": "vote_option_2", "returns": {"type": "void"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "uint64", "name": "poll_id"}, {"type": "address", "name": "caller"}], "name": "vote_option_3", "returns": {"type": "void"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "uint64", "name": "poll_id"}, {"type": "address", "name": "caller"}], "name": "vote_option_4", "returns": {"type": "void"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "uint64", "name": "poll_id"}, {"type": "address", "name": "caller"}], "name": "vote_option_5", "returns": {"type": "void"}, "events": [], "readonly": false, "recommendations": {}}, {"actions": {"call": ["NoOp"], "create": []}, "args": [{"type": "uint64", "name": "poll_id"}, {"type": "address", "name": "caller"}], "name": "did_vote", "returns": {"type": "bool"}, "events": [], "readonly": false, "recommendations": {}}], "name": "PollManager", "state": {"keys": {"box": {}, "global": {"next_poll_id": {"key": "bmV4dF9wb2xsX2lk", "keyType": "AVMString", "valueType": "uint64"}}, "local": {}}, "maps": {"box": {"box_map_struct": {"keyType": "uint64", "valueType": "PollData", "prefix": "cG9sbHM="}}, "global": {}, "local": {}}, "schema": {"global": {"bytes": 1, "ints": 0}, "local": {"bytes": 0, "ints": 0}}}, "structs": {"PollData": [{"name": "question", "type": "string"}, {"name": "option_1", "type": "string"}, {"name": "option_2", "type": "string"}, {"name": "option_3", "type": "string"}, {"name": "option_4", "type": "string"}, {"name": "option_5", "type": "string"}, {"name": "option_1_votes", "type": "uint64"}, {"name": "option_2_votes", "type": "uint64"}, {"name": "option_3_votes", "type": "uint64"}, {"name": "option_4_votes", "type": "uint64"}, {"name": "option_5_votes", "type": "uint64"}, {"name": "voters", "type": "address[]"}]}, "byteCode": {"approval": "CiAEAQAgNCYDBXBvbGxzDG5leHRfcG9sbF9pZAQVH3x1MRhAAAwpgAgAAAAAAAAAAWcxG0EA5YIIBAK+zhEEVSQPFwRVAqebBEQ4WuUEprGfYQQXIFTbBNn6zC8EhpJqujYaAI4IAIgAeQBnAFUAQwAxAB8AAiNDMRkURDEYRDYaATYaAogCSYABACNPAlQqTFCwIkMxGRREMRhENhoBNhoCiAHfIkMxGRREMRhENhoBNhoCiAGAIkMxGRREMRhENhoBNhoCiAEhIkMxGRREMRhENhoBNhoCiADCIkMxGRREMRhENhoBNhoCiABjIkMxGRREMRhENhoBiAA7IkMxGRREMRhENhoBVwIAiAAZSRUWVwYCTFAqTFCwIkMxGUD/VTEYFEQiQ4oBAYAHSGVsbG8sIIv/UImKAQAjKWVEKEsBUEm8SIv/vxciCBYpTGeJigIAi/6L/4gBdxREKIv+UEm+REmBDFsiCBZcDEsBvEhKv0klWUsBFUsCSwJPAlJXAgCL/1BJFSQKFlcGAkxQTwIjTwNYTFBLAbxIv4mKAgCL/ov/iAEqFEQoi/5QSb5ESYEUWyIIFlwUSwG8SEq/SSVZSwEVSwJLAk8CUlcCAIv/UEkVJAoWVwYCTFBPAiNPA1hMUEsBvEi/iYoCAIv+i/+IAN0URCiL/lBJvkRJgRxbIggWXBxLAbxISr9JJVlLARVLAksCTwJSVwIAi/9QSRUkChZXBgJMUE8CI08DWExQSwG8SL+JigIAi/6L/4gAkBREKIv+UEm+REmBJFsiCBZcJEsBvEhKv0klWUsBFUsCSwJPAlJXAgCL/1BJFSQKFlcGAkxQTwIjTwNYTFBLAbxIv4mKAgCL/ov/iABDFEQoi/5QSb5ESYEsWyIIFlwsSwG8SEq/SSVZSwEVSwJLAk8CUlcCAIv/UEkVJAoWVwYCTFBPAiNPA1hMUEsBvEi/iYoCAYAAIyiL/lC+REklWUsBFVJJI1kjiwSLAwyLAYwAQQAUiwJXAgCLBCQLJFiL/xJBAAQijACJiwQiCIwEQv/W", "clear": "CoEBQw=="}, "events": [], "networks": {}, "source": {"approval": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBzbWFydF9jb250cmFjdHMucG9sbF9tYW5hZ2VyLmNvbnRyYWN0LlBvbGxNYW5hZ2VyLl9fYWxnb3B5X2VudHJ5cG9pbnRfd2l0aF9pbml0KCkgLT4gdWludDY0OgptYWluOgogICAgaW50Y2Jsb2NrIDEgMCAzMiA1MgogICAgYnl0ZWNibG9jayAicG9sbHMiICJuZXh0X3BvbGxfaWQiIDB4MTUxZjdjNzUKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBibnogbWFpbl9hZnRlcl9pZl9lbHNlQDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MjIKICAgIC8vIHNlbGYubmV4dF9wb2xsX2lkID0gYXJjNC5VSW50NjQoMSkKICAgIGJ5dGVjXzEgLy8gIm5leHRfcG9sbF9pZCIKICAgIHB1c2hieXRlcyAweDAwMDAwMDAwMDAwMDAwMDEKICAgIGFwcF9nbG9iYWxfcHV0CgptYWluX2FmdGVyX2lmX2Vsc2VAMjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MTkKICAgIC8vIGNsYXNzIFBvbGxNYW5hZ2VyKEFSQzRDb250cmFjdCk6CiAgICB0eG4gTnVtQXBwQXJncwogICAgYnogbWFpbl9iYXJlX3JvdXRpbmdAMTMKICAgIHB1c2hieXRlc3MgMHgwMmJlY2UxMSAweDU1MjQwZjE3IDB4NTUwMmE3OWIgMHg0NDM4NWFlNSAweGE2YjE5ZjYxIDB4MTcyMDU0ZGIgMHhkOWZhY2MyZiAweDg2OTI2YWJhIC8vIG1ldGhvZCAiaGVsbG8oc3RyaW5nKXN0cmluZyIsIG1ldGhvZCAiY3JlYXRlX3BvbGwoKHN0cmluZyxzdHJpbmcsc3RyaW5nLHN0cmluZyxzdHJpbmcsc3RyaW5nLHVpbnQ2NCx1aW50NjQsdWludDY0LHVpbnQ2NCx1aW50NjQsYWRkcmVzc1tdKSl2b2lkIiwgbWV0aG9kICJ2b3RlX29wdGlvbl8xKHVpbnQ2NCxhZGRyZXNzKXZvaWQiLCBtZXRob2QgInZvdGVfb3B0aW9uXzIodWludDY0LGFkZHJlc3Mpdm9pZCIsIG1ldGhvZCAidm90ZV9vcHRpb25fMyh1aW50NjQsYWRkcmVzcyl2b2lkIiwgbWV0aG9kICJ2b3RlX29wdGlvbl80KHVpbnQ2NCxhZGRyZXNzKXZvaWQiLCBtZXRob2QgInZvdGVfb3B0aW9uXzUodWludDY0LGFkZHJlc3Mpdm9pZCIsIG1ldGhvZCAiZGlkX3ZvdGUodWludDY0LGFkZHJlc3MpYm9vbCIKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDAKICAgIG1hdGNoIG1haW5faGVsbG9fcm91dGVANSBtYWluX2NyZWF0ZV9wb2xsX3JvdXRlQDYgbWFpbl92b3RlX29wdGlvbl8xX3JvdXRlQDcgbWFpbl92b3RlX29wdGlvbl8yX3JvdXRlQDggbWFpbl92b3RlX29wdGlvbl8zX3JvdXRlQDkgbWFpbl92b3RlX29wdGlvbl80X3JvdXRlQDEwIG1haW5fdm90ZV9vcHRpb25fNV9yb3V0ZUAxMSBtYWluX2RpZF92b3RlX3JvdXRlQDEyCgptYWluX2FmdGVyX2lmX2Vsc2VAMTU6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjE5CiAgICAvLyBjbGFzcyBQb2xsTWFuYWdlcihBUkM0Q29udHJhY3QpOgogICAgaW50Y18xIC8vIDAKICAgIHJldHVybgoKbWFpbl9kaWRfdm90ZV9yb3V0ZUAxMjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjYKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjE5CiAgICAvLyBjbGFzcyBQb2xsTWFuYWdlcihBUkM0Q29udHJhY3QpOgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo2NgogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICBjYWxsc3ViIGRpZF92b3RlCiAgICBwdXNoYnl0ZXMgMHgwMAogICAgaW50Y18xIC8vIDAKICAgIHVuY292ZXIgMgogICAgc2V0Yml0CiAgICBieXRlY18yIC8vIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX3ZvdGVfb3B0aW9uXzVfcm91dGVAMTE6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjYwCiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjAKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiB2b3RlX29wdGlvbl81CiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX3ZvdGVfb3B0aW9uXzRfcm91dGVAMTA6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjU0CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTQKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiB2b3RlX29wdGlvbl80CiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX3ZvdGVfb3B0aW9uXzNfcm91dGVAOToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDgKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjE5CiAgICAvLyBjbGFzcyBQb2xsTWFuYWdlcihBUkM0Q29udHJhY3QpOgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo0OAogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICBjYWxsc3ViIHZvdGVfb3B0aW9uXzMKICAgIGludGNfMCAvLyAxCiAgICByZXR1cm4KCm1haW5fdm90ZV9vcHRpb25fMl9yb3V0ZUA4OgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo0MgogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MTkKICAgIC8vIGNsYXNzIFBvbGxNYW5hZ2VyKEFSQzRDb250cmFjdCk6CiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAyCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQyCiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIGNhbGxzdWIgdm90ZV9vcHRpb25fMgogICAgaW50Y18wIC8vIDEKICAgIHJldHVybgoKbWFpbl92b3RlX29wdGlvbl8xX3JvdXRlQDc6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjM2CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MzYKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiB2b3RlX29wdGlvbl8xCiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX2NyZWF0ZV9wb2xsX3JvdXRlQDY6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjI4CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MjgKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiBjcmVhdGVfcG9sbAogICAgaW50Y18wIC8vIDEKICAgIHJldHVybgoKbWFpbl9oZWxsb19yb3V0ZUA1OgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyNAogICAgLy8gQGFyYzQuYWJpbWV0aG9kKCkKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGV4dHJhY3QgMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjI0CiAgICAvLyBAYXJjNC5hYmltZXRob2QoKQogICAgY2FsbHN1YiBoZWxsbwogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGJ5dGVjXzIgLy8gMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMCAvLyAxCiAgICByZXR1cm4KCm1haW5fYmFyZV9yb3V0aW5nQDEzOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgIGJueiBtYWluX2FmdGVyX2lmX2Vsc2VAMTUKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICAhCiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIGNyZWF0aW5nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgoKLy8gc21hcnRfY29udHJhY3RzLnBvbGxfbWFuYWdlci5jb250cmFjdC5Qb2xsTWFuYWdlci5oZWxsbyhuYW1lOiBieXRlcykgLT4gYnl0ZXM6CmhlbGxvOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyNC0yNQogICAgLy8gQGFyYzQuYWJpbWV0aG9kKCkKICAgIC8vIGRlZiBoZWxsbyhzZWxmLCBuYW1lOiBTdHJpbmcpIC0+IFN0cmluZzoKICAgIHByb3RvIDEgMQogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyNgogICAgLy8gcmV0dXJuICJIZWxsbywgIiArIG5hbWUKICAgIHB1c2hieXRlcyAiSGVsbG8sICIKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMucG9sbF9tYW5hZ2VyLmNvbnRyYWN0LlBvbGxNYW5hZ2VyLmNyZWF0ZV9wb2xsKHBvbGxfZGF0YTogYnl0ZXMpIC0+IHZvaWQ6CmNyZWF0ZV9wb2xsOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyOC0zMgogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICAvLyBkZWYgY3JlYXRlX3BvbGwoCiAgICAvLyAgICAgc2VsZiwKICAgIC8vICAgICBwb2xsX2RhdGE6IFBvbGxEYXRhLAogICAgLy8gKSAtPiBOb25lOgogICAgcHJvdG8gMSAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjMzCiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3NlbGYubmV4dF9wb2xsX2lkXSA9IHBvbGxfZGF0YS5jb3B5KCkKICAgIGludGNfMSAvLyAwCiAgICBieXRlY18xIC8vICJuZXh0X3BvbGxfaWQiCiAgICBhcHBfZ2xvYmFsX2dldF9leAogICAgYXNzZXJ0IC8vIGNoZWNrIHNlbGYubmV4dF9wb2xsX2lkIGV4aXN0cwogICAgYnl0ZWNfMCAvLyAicG9sbHMiCiAgICBkaWcgMQogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9kZWwKICAgIHBvcAogICAgZnJhbWVfZGlnIC0xCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjM0CiAgICAvLyBzZWxmLm5leHRfcG9sbF9pZCA9IGFyYzQuVUludDY0KHNlbGYubmV4dF9wb2xsX2lkLm5hdGl2ZSArIDEpCiAgICBidG9pCiAgICBpbnRjXzAgLy8gMQogICAgKwogICAgaXRvYgogICAgYnl0ZWNfMSAvLyAibmV4dF9wb2xsX2lkIgogICAgc3dhcAogICAgYXBwX2dsb2JhbF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fMShwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fMToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MzYtMzcKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzEoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjM4CiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MzkKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzFfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl8xX3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDEyIC8vIDEyCiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDEyCiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQwCiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fMihwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fMjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDItNDMKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzIoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQ0CiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDUKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzJfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl8yX3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDIwIC8vIDIwCiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDIwCiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQ2CiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fMyhwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fMzoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDgtNDkKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzMoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjUwCiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTEKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzNfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl8zX3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDI4IC8vIDI4CiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDI4CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjUyCiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fNChwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fNDoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTQtNTUKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzQoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjU2CiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTcKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzRfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl80X3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDM2IC8vIDM2CiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDM2CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjU4CiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fNShwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fNToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjAtNjEKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzUoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjYyCiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjMKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzVfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl81X3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDQ0IC8vIDQ0CiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDQ0CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjY0CiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIuZGlkX3ZvdGUocG9sbF9pZDogYnl0ZXMsIGNhbGxlcjogYnl0ZXMpIC0+IHVpbnQ2NDoKZGlkX3ZvdGU6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjY2LTY3CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIC8vIGRlZiBkaWRfdm90ZShzZWxmLCBwb2xsX2lkOiBhcmM0LlVJbnQ2NCwgY2FsbGVyOiBhcmM0LkFkZHJlc3MpIC0+IGJvb2w6CiAgICBwcm90byAyIDEKICAgIHB1c2hieXRlcyAiIgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo2OAogICAgLy8gZm91bmQgPSBGYWxzZQogICAgaW50Y18xIC8vIDAKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjkKICAgIC8vIGZvciB2b3RlciBpbiBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVyczoKICAgIGJ5dGVjXzAgLy8gInBvbGxzIgogICAgZnJhbWVfZGlnIC0yCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBzdWJzdHJpbmczCiAgICBkdXAKICAgIGludGNfMSAvLyAwCiAgICBleHRyYWN0X3VpbnQxNgogICAgaW50Y18xIC8vIDAKCmRpZF92b3RlX2Zvcl9oZWFkZXJAMToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjkKICAgIC8vIGZvciB2b3RlciBpbiBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVyczoKICAgIGZyYW1lX2RpZyA0CiAgICBmcmFtZV9kaWcgMwogICAgPAogICAgZnJhbWVfZGlnIDEKICAgIGZyYW1lX2J1cnkgMAogICAgYnogZGlkX3ZvdGVfYWZ0ZXJfZm9yQDYKICAgIGZyYW1lX2RpZyAyCiAgICBleHRyYWN0IDIgMAogICAgZnJhbWVfZGlnIDQKICAgIGludGNfMiAvLyAzMgogICAgKgogICAgaW50Y18yIC8vIDMyCiAgICBleHRyYWN0MyAvLyBvbiBlcnJvcjogSW5kZXggYWNjZXNzIGlzIG91dCBvZiBib3VuZHMKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NzAKICAgIC8vIGlmIGNhbGxlciA9PSB2b3RlcjoKICAgIGZyYW1lX2RpZyAtMQogICAgPT0KICAgIGJ6IGRpZF92b3RlX2FmdGVyX2lmX2Vsc2VANAogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo3MQogICAgLy8gZm91bmQgPSBUcnVlCiAgICBpbnRjXzAgLy8gMQogICAgZnJhbWVfYnVyeSAwCgpkaWRfdm90ZV9hZnRlcl9mb3JANjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NzMKICAgIC8vIHJldHVybiBmb3VuZAogICAgcmV0c3ViCgpkaWRfdm90ZV9hZnRlcl9pZl9lbHNlQDQ6CiAgICBmcmFtZV9kaWcgNAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGZyYW1lX2J1cnkgNAogICAgYiBkaWRfdm90ZV9mb3JfaGVhZGVyQDEK", "clear": "I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuY2xlYXJfc3RhdGVfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4K"}, "sourceInfo": {"approval": {"pcOffsetMethod": "none", "sourceInfo": [{"pc": [347, 424, 501, 578, 655], "errorMessage": "Already voted"}, {"pc": [766], "errorMessage": "Index access is out of bounds"}, {"pc": [123, 152, 170, 188, 206, 224, 242, 257], "errorMessage": "OnCompletion is not NoOp"}, {"pc": [292], "errorMessage": "can only call when creating"}, {"pc": [126, 155, 173, 191, 209, 227, 245, 260], "errorMessage": "can only call when not creating"}, {"pc": [354, 431, 508, 585, 662, 732], "errorMessage": "check self.box_map_struct entry exists"}, {"pc": [317], "errorMessage": "check self.next_poll_id exists"}]}, "clear": {"pcOffsetMethod": "none", "sourceInfo": []}}, "templateVariables": {}}"""
 APP_SPEC = algokit_utils.Arc56Contract.from_json(_APP_SPEC_JSON)
 
 def _parse_abi_args(args: object | None = None) -> list[object] | None:
@@ -64,6 +64,23 @@ def _init_dataclass(cls: type, data: dict) -> object:
             field_values[field.name] = field_value
     return cls(**field_values)
 
+@dataclasses.dataclass(frozen=True)
+class PollData:
+    """Struct for PollData"""
+    question: str
+    option_1: str
+    option_2: str
+    option_3: str
+    option_4: str
+    option_5: str
+    option_1_votes: int
+    option_2_votes: int
+    option_3_votes: int
+    option_4_votes: int
+    option_5_votes: int
+    voters: list[str]
+
+
 @dataclasses.dataclass(frozen=True, kw_only=True)
 class HelloArgs:
     """Dataclass for hello arguments"""
@@ -72,6 +89,75 @@ class HelloArgs:
     @property
     def abi_method_signature(self) -> str:
         return "hello(string)string"
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class CreatePollArgs:
+    """Dataclass for create_poll arguments"""
+    poll_data: PollData
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void"
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class VoteOption1Args:
+    """Dataclass for vote_option_1 arguments"""
+    poll_id: int
+    caller: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "vote_option_1(uint64,address)void"
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class VoteOption2Args:
+    """Dataclass for vote_option_2 arguments"""
+    poll_id: int
+    caller: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "vote_option_2(uint64,address)void"
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class VoteOption3Args:
+    """Dataclass for vote_option_3 arguments"""
+    poll_id: int
+    caller: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "vote_option_3(uint64,address)void"
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class VoteOption4Args:
+    """Dataclass for vote_option_4 arguments"""
+    poll_id: int
+    caller: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "vote_option_4(uint64,address)void"
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class VoteOption5Args:
+    """Dataclass for vote_option_5 arguments"""
+    poll_id: int
+    caller: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "vote_option_5(uint64,address)void"
+
+@dataclasses.dataclass(frozen=True, kw_only=True)
+class DidVoteArgs:
+    """Dataclass for did_vote arguments"""
+    poll_id: int
+    caller: str
+
+    @property
+    def abi_method_signature(self) -> str:
+        return "did_vote(uint64,address)bool"
 
 
 class PollManagerParams:
@@ -88,6 +174,97 @@ class PollManagerParams:
         return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "hello(string)string",
+            "args": method_args,
+        }))
+
+    def create_poll(
+        self,
+        args: tuple[PollData] | CreatePollArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void",
+            "args": method_args,
+        }))
+
+    def vote_option_1(
+        self,
+        args: tuple[int, str] | VoteOption1Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_1(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_2(
+        self,
+        args: tuple[int, str] | VoteOption2Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_2(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_3(
+        self,
+        args: tuple[int, str] | VoteOption3Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_3(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_4(
+        self,
+        args: tuple[int, str] | VoteOption4Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_4(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_5(
+        self,
+        args: tuple[int, str] | VoteOption5Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_5(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def did_vote(
+        self,
+        args: tuple[int, str] | DidVoteArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.AppCallMethodCallParams:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.params.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "did_vote(uint64,address)bool",
             "args": method_args,
         }))
 
@@ -116,6 +293,97 @@ class PollManagerCreateTransactionParams:
         return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
             **dataclasses.asdict(params),
             "method": "hello(string)string",
+            "args": method_args,
+        }))
+
+    def create_poll(
+        self,
+        args: tuple[PollData] | CreatePollArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void",
+            "args": method_args,
+        }))
+
+    def vote_option_1(
+        self,
+        args: tuple[int, str] | VoteOption1Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_1(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_2(
+        self,
+        args: tuple[int, str] | VoteOption2Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_2(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_3(
+        self,
+        args: tuple[int, str] | VoteOption3Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_3(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_4(
+        self,
+        args: tuple[int, str] | VoteOption4Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_4(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def vote_option_5(
+        self,
+        args: tuple[int, str] | VoteOption5Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_5(uint64,address)void",
+            "args": method_args,
+        }))
+
+    def did_vote(
+        self,
+        args: tuple[int, str] | DidVoteArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> algokit_utils.BuiltTransactions:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        return self.app_client.create_transaction.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "did_vote(uint64,address)bool",
             "args": method_args,
         }))
 
@@ -150,6 +418,118 @@ class PollManagerSend:
         parsed_response = response
         return typing.cast(algokit_utils.SendAppTransactionResult[str], parsed_response)
 
+    def create_poll(
+        self,
+        args: tuple[PollData] | CreatePollArgs,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[None]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[None], parsed_response)
+
+    def vote_option_1(
+        self,
+        args: tuple[int, str] | VoteOption1Args,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[None]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_1(uint64,address)void",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[None], parsed_response)
+
+    def vote_option_2(
+        self,
+        args: tuple[int, str] | VoteOption2Args,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[None]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_2(uint64,address)void",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[None], parsed_response)
+
+    def vote_option_3(
+        self,
+        args: tuple[int, str] | VoteOption3Args,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[None]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_3(uint64,address)void",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[None], parsed_response)
+
+    def vote_option_4(
+        self,
+        args: tuple[int, str] | VoteOption4Args,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[None]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_4(uint64,address)void",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[None], parsed_response)
+
+    def vote_option_5(
+        self,
+        args: tuple[int, str] | VoteOption5Args,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[None]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "vote_option_5(uint64,address)void",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[None], parsed_response)
+
+    def did_vote(
+        self,
+        args: tuple[int, str] | DidVoteArgs,
+        params: algokit_utils.CommonAppCallParams | None = None,
+        send_params: algokit_utils.SendParams | None = None
+    ) -> algokit_utils.SendAppTransactionResult[bool]:
+        method_args = _parse_abi_args(args)
+        params = params or algokit_utils.CommonAppCallParams()
+        response = self.app_client.send.call(algokit_utils.AppClientMethodCallParams(**{
+            **dataclasses.asdict(params),
+            "method": "did_vote(uint64,address)bool",
+            "args": method_args,
+        }), send_params=send_params)
+        parsed_response = response
+        return typing.cast(algokit_utils.SendAppTransactionResult[bool], parsed_response)
+
     def clear_state(
         self,
         params: algokit_utils.AppClientBareCallParams | None = None,
@@ -161,11 +541,129 @@ class PollManagerSend:
         )
 
 
+class GlobalStateValue(typing.TypedDict):
+    """Shape of global_state state key values"""
+    next_poll_id: int
+
 class PollManagerState:
     """Methods to access state for the current PollManager app"""
 
     def __init__(self, app_client: algokit_utils.AppClient):
         self.app_client = app_client
+
+    @property
+    def global_state(
+        self
+    ) -> "_GlobalState":
+            """Methods to access global_state for the current app"""
+            return _GlobalState(self.app_client)
+
+    @property
+    def box(
+        self
+    ) -> "_BoxState":
+            """Methods to access box for the current app"""
+            return _BoxState(self.app_client)
+
+class _GlobalState:
+    def __init__(self, app_client: algokit_utils.AppClient):
+        self.app_client = app_client
+        
+        # Pre-generated mapping of value types to their struct classes
+        self._struct_classes: dict[str, typing.Type[typing.Any]] = {}
+
+    def get_all(self) -> GlobalStateValue:
+        """Get all current keyed values from global_state state"""
+        result = self.app_client.state.global_state.get_all()
+        if not result:
+            return typing.cast(GlobalStateValue, {})
+
+        converted = {}
+        for key, value in result.items():
+            key_info = self.app_client.app_spec.state.keys.global_state.get(key)
+            struct_class = self._struct_classes.get(key_info.value_type) if key_info else None
+            converted[key] = (
+                _init_dataclass(struct_class, value) if struct_class and isinstance(value, dict)
+                else value
+            )
+        return typing.cast(GlobalStateValue, converted)
+
+    @property
+    def next_poll_id(self) -> int:
+        """Get the current value of the next_poll_id key in global_state state"""
+        value = self.app_client.state.global_state.get_value("next_poll_id")
+        if isinstance(value, dict) and "uint64" in self._struct_classes:
+            return _init_dataclass(self._struct_classes["uint64"], value)  # type: ignore
+        return typing.cast(int, value)
+
+class _BoxState:
+    def __init__(self, app_client: algokit_utils.AppClient):
+        self.app_client = app_client
+        
+        # Pre-generated mapping of value types to their struct classes
+        self._struct_classes: dict[str, typing.Type[typing.Any]] = {
+            "PollData": PollData
+        }
+
+    def get_all(self) -> dict[str, typing.Any]:
+        """Get all current keyed values from box state"""
+        result = self.app_client.state.box.get_all()
+        if not result:
+            return {}
+
+        converted = {}
+        for key, value in result.items():
+            key_info = self.app_client.app_spec.state.keys.box.get(key)
+            struct_class = self._struct_classes.get(key_info.value_type) if key_info else None
+            converted[key] = (
+                _init_dataclass(struct_class, value) if struct_class and isinstance(value, dict)
+                else value
+            )
+        return converted
+
+    @property
+    def box_map_struct(self) -> "_MapState[int, PollData]":
+        """Get values from the box_map_struct map in box state"""
+        return _MapState(
+            self.app_client.state.box,
+            "box_map_struct",
+            self._struct_classes.get("PollData")
+        )
+
+_KeyType = typing.TypeVar("_KeyType")
+_ValueType = typing.TypeVar("_ValueType")
+
+class _AppClientStateMethodsProtocol(typing.Protocol):
+    def get_map(self, map_name: str) -> dict[typing.Any, typing.Any]:
+        ...
+    def get_map_value(self, map_name: str, key: typing.Any) -> typing.Any | None:
+        ...
+
+class _MapState(typing.Generic[_KeyType, _ValueType]):
+    """Generic class for accessing state maps with strongly typed keys and values"""
+
+    def __init__(self, state_accessor: _AppClientStateMethodsProtocol, map_name: str,
+                struct_class: typing.Type[_ValueType] | None = None):
+        self._state_accessor = state_accessor
+        self._map_name = map_name
+        self._struct_class = struct_class
+
+    def get_map(self) -> dict[_KeyType, _ValueType]:
+        """Get all current values in the map"""
+        result = self._state_accessor.get_map(self._map_name)
+        if self._struct_class and result:
+            return {k: _init_dataclass(self._struct_class, v) if isinstance(v, dict) else v
+                    for k, v in result.items()}  # type: ignore
+        return typing.cast(dict[_KeyType, _ValueType], result or {})
+
+    def get_value(self, key: _KeyType) -> _ValueType | None:
+        """Get a value from the map by key"""
+        key_value = dataclasses.asdict(key) if dataclasses.is_dataclass(key) else key  # type: ignore
+        value = self._state_accessor.get_map_value(self._map_name, key_value)
+        if value is not None and self._struct_class and isinstance(value, dict):
+            return _init_dataclass(self._struct_class, value)  # type: ignore
+        return typing.cast(_ValueType | None, value)
+
 
 class PollManagerClient:
     """Client for interacting with PollManager smart contract"""
@@ -319,6 +817,48 @@ class PollManagerClient:
     @typing.overload
     def decode_return_value(
         self,
+        method: typing.Literal["create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
+        method: typing.Literal["vote_option_1(uint64,address)void"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
+        method: typing.Literal["vote_option_2(uint64,address)void"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
+        method: typing.Literal["vote_option_3(uint64,address)void"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
+        method: typing.Literal["vote_option_4(uint64,address)void"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
+        method: typing.Literal["vote_option_5(uint64,address)void"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
+        method: typing.Literal["did_vote(uint64,address)bool"],
+        return_value: algokit_utils.ABIReturn | None
+    ) -> bool | None: ...
+    @typing.overload
+    def decode_return_value(
+        self,
         method: str,
         return_value: algokit_utils.ABIReturn | None
     ) -> algokit_utils.ABIValue | algokit_utils.ABIStruct | None: ...
@@ -327,7 +867,7 @@ class PollManagerClient:
         self,
         method: str,
         return_value: algokit_utils.ABIReturn | None
-    ) -> algokit_utils.ABIValue | algokit_utils.ABIStruct | None | str:
+    ) -> algokit_utils.ABIValue | algokit_utils.ABIStruct | None | bool | str:
         """Decode ABI return value for the given method."""
         if return_value is None:
             return None
@@ -518,6 +1058,146 @@ class PollManagerFactoryCreateParams:
             compilation_params=compilation_params
         )
 
+    def create_poll(
+        self,
+        args: tuple[PollData] | CreatePollArgs,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
+    def vote_option_1(
+        self,
+        args: tuple[int, str] | VoteOption1Args,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the vote_option_1(uint64,address)void ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "vote_option_1(uint64,address)void",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
+    def vote_option_2(
+        self,
+        args: tuple[int, str] | VoteOption2Args,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the vote_option_2(uint64,address)void ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "vote_option_2(uint64,address)void",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
+    def vote_option_3(
+        self,
+        args: tuple[int, str] | VoteOption3Args,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the vote_option_3(uint64,address)void ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "vote_option_3(uint64,address)void",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
+    def vote_option_4(
+        self,
+        args: tuple[int, str] | VoteOption4Args,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the vote_option_4(uint64,address)void ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "vote_option_4(uint64,address)void",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
+    def vote_option_5(
+        self,
+        args: tuple[int, str] | VoteOption5Args,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the vote_option_5(uint64,address)void ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "vote_option_5(uint64,address)void",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
+    def did_vote(
+        self,
+        args: tuple[int, str] | DidVoteArgs,
+        *,
+        params: algokit_utils.CommonAppCallCreateParams | None = None,
+        compilation_params: algokit_utils.AppClientCompilationParams | None = None
+    ) -> algokit_utils.AppCreateMethodCallParams:
+        """Creates a new instance using the did_vote(uint64,address)bool ABI method"""
+        params = params or algokit_utils.CommonAppCallCreateParams()
+        return self.app_factory.params.create(
+            algokit_utils.AppFactoryCreateMethodCallParams(
+                **{
+                **dataclasses.asdict(params),
+                "method": "did_vote(uint64,address)bool",
+                "args": _parse_abi_args(args),
+                }
+            ),
+            compilation_params=compilation_params
+        )
+
 class PollManagerFactoryUpdateParams:
     """Parameters for 'update' operations of PollManager contract"""
 
@@ -633,6 +1313,132 @@ class PollManagerComposer:
         self._result_mappers.append(
             lambda v: self.client.decode_return_value(
                 "hello(string)string", v
+            )
+        )
+        return self
+
+    def create_poll(
+        self,
+        args: tuple[PollData] | CreatePollArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "PollManagerComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.create_poll(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void", v
+            )
+        )
+        return self
+
+    def vote_option_1(
+        self,
+        args: tuple[int, str] | VoteOption1Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "PollManagerComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.vote_option_1(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "vote_option_1(uint64,address)void", v
+            )
+        )
+        return self
+
+    def vote_option_2(
+        self,
+        args: tuple[int, str] | VoteOption2Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "PollManagerComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.vote_option_2(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "vote_option_2(uint64,address)void", v
+            )
+        )
+        return self
+
+    def vote_option_3(
+        self,
+        args: tuple[int, str] | VoteOption3Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "PollManagerComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.vote_option_3(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "vote_option_3(uint64,address)void", v
+            )
+        )
+        return self
+
+    def vote_option_4(
+        self,
+        args: tuple[int, str] | VoteOption4Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "PollManagerComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.vote_option_4(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "vote_option_4(uint64,address)void", v
+            )
+        )
+        return self
+
+    def vote_option_5(
+        self,
+        args: tuple[int, str] | VoteOption5Args,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "PollManagerComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.vote_option_5(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "vote_option_5(uint64,address)void", v
+            )
+        )
+        return self
+
+    def did_vote(
+        self,
+        args: tuple[int, str] | DidVoteArgs,
+        params: algokit_utils.CommonAppCallParams | None = None
+    ) -> "PollManagerComposer":
+        self._composer.add_app_call_method_call(
+            self.client.params.did_vote(
+                args=args,
+                params=params,
+            )
+        )
+        self._result_mappers.append(
+            lambda v: self.client.decode_return_value(
+                "did_vote(uint64,address)bool", v
             )
         )
         return self

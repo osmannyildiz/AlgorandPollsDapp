@@ -1,16 +1,22 @@
 import { SupportedWallet, WalletId, WalletManager, WalletProvider } from '@txnlab/use-wallet-react'
 import { Home as HomeIcon, PlusCircle } from 'lucide-react'
-import { enqueueSnackbar, SnackbarProvider } from 'notistack'
-import { useEffect, useState } from 'react'
+import { SnackbarProvider } from 'notistack'
+import { useState } from 'react'
 import { Link, Route, Routes, useLocation, useNavigate } from 'react-router-dom'
 import ConnectWalletButtonAndModal from './components/ConnectWalletButtonAndModal'
 import CreatePage from './components/pages/CreatePage'
 import HomePage from './components/pages/HomePage'
 import Home from './components/template/Home'
-import { Poll } from './types'
+import { PollData } from './contracts/PollManager'
 import { getAlgodConfigFromViteEnvironment, getKmdConfigFromViteEnvironment } from './utils/network/getAlgoClientConfigs'
 
-let supportedWallets: SupportedWallet[]
+let supportedWallets: SupportedWallet[] = [
+  { id: WalletId.LUTE },
+  { id: WalletId.PERA },
+  { id: WalletId.DEFLY },
+  // If you are interested in WalletConnect v2 provider
+  // refer to https://github.com/TxnLab/use-wallet for detailed integration instructions
+]
 if (import.meta.env.VITE_ALGOD_NETWORK === 'localnet') {
   const kmdConfig = getKmdConfigFromViteEnvironment()
   supportedWallets = [
@@ -22,14 +28,7 @@ if (import.meta.env.VITE_ALGOD_NETWORK === 'localnet') {
         port: String(kmdConfig.port),
       },
     },
-  ]
-} else {
-  supportedWallets = [
-    { id: WalletId.DEFLY },
-    { id: WalletId.PERA },
-    { id: WalletId.EXODUS },
-    // If you are interested in WalletConnect v2 provider
-    // refer to https://github.com/TxnLab/use-wallet for detailed integration instructions
+    ...supportedWallets,
   ]
 }
 
@@ -55,79 +54,26 @@ export default function App() {
 
   const location = useLocation()
   const navigate = useNavigate()
-  const [polls, setPolls] = useState<Poll[]>([])
+  const [polls, setPolls] = useState<PollData[]>([])
   const [isLoading, setIsLoading] = useState(true)
-  const [mockPolls] = useState<Poll[]>([
-    {
-      id: '1',
-      question: 'What is your favorite programming language?',
-      options: [
-        { id: 'opt1', text: 'JavaScript', votes: 24 },
-        { id: 'opt2', text: 'Python', votes: 18 },
-        { id: 'opt3', text: 'TypeScript', votes: 31 },
-        { id: 'opt4', text: 'Rust', votes: 12 },
-      ],
-      totalVotes: 85,
-      votedOptionId: null,
-    },
-    {
-      id: '2',
-      question: 'Best time to code?',
-      options: [
-        { id: 'opt1', text: 'Morning', votes: 15 },
-        { id: 'opt2', text: 'Afternoon', votes: 8 },
-        { id: 'opt3', text: 'Evening', votes: 22 },
-        { id: 'opt4', text: 'Night', votes: 35 },
-      ],
-      totalVotes: 80,
-      votedOptionId: null,
-    },
-    {
-      id: '3',
-      question: 'Preferred development environment?',
-      options: [
-        { id: 'opt1', text: 'VS Code', votes: 45 },
-        { id: 'opt2', text: 'IntelliJ IDEA', votes: 20 },
-        { id: 'opt3', text: 'Vim', votes: 12 },
-      ],
-      totalVotes: 77,
-      votedOptionId: null,
-    },
-  ])
-
-  const fetchPolls = async () => {
-    setIsLoading(true)
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 800))
-      setPolls([...mockPolls])
-    } catch (err) {
-      enqueueSnackbar(`Failed to load polls. Please try again.`, { variant: 'error' })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchPolls()
-  }, [])
 
   const handleVote = async (pollId: string, optionId: string): Promise<void> => {
     try {
       await new Promise((resolve) => setTimeout(resolve, 600))
 
-      const updatedPolls = polls.map((poll) => {
-        if (poll.id === pollId && !poll.votedOptionId) {
-          return {
-            ...poll,
-            votedOptionId: optionId,
-            totalVotes: poll.totalVotes + 1,
-            options: poll.options.map((opt) => (opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt)),
-          }
-        }
-        return poll
-      })
+      // const updatedPolls = polls.map((poll) => {
+      //   if (poll.id === pollId && !poll.votedOptionId) {
+      //     return {
+      //       ...poll,
+      //       votedOptionId: optionId,
+      //       totalVotes: poll.totalVotes + 1,
+      //       options: poll.options.map((opt) => (opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt)),
+      //     }
+      //   }
+      //   return poll
+      // })
 
-      setPolls(updatedPolls)
+      // setPolls(updatedPolls)
     } catch (err) {
       throw new Error('Failed to submit vote. Please try again.')
     }
@@ -137,18 +83,18 @@ export default function App() {
     try {
       await new Promise((resolve) => setTimeout(resolve, 600))
 
-      const newPoll: Poll = {
-        id: Date.now().toString(),
-        question,
-        options: options.map((text, index) => ({
-          id: `opt${index + 1}`,
-          text,
-          votes: 0,
-        })),
-        totalVotes: 0,
-        votedOptionId: null,
-      }
-      setPolls((prevPolls) => [newPoll, ...prevPolls])
+      // const newPoll: Poll = {
+      //   id: Date.now().toString(),
+      //   question,
+      //   options: options.map((text, index) => ({
+      //     id: `opt${index + 1}`,
+      //     text,
+      //     votes: 0,
+      //   })),
+      //   totalVotes: 0,
+      //   votedOptionId: null,
+      // }
+      // setPolls((prevPolls) => [newPoll, ...prevPolls])
       navigate('/')
     } catch (err) {
       throw new Error('Failed to create poll. Please try again.')
@@ -213,7 +159,12 @@ export default function App() {
           {/* Main Content */}
           <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
             <Routes>
-              <Route path="/" element={<HomePage polls={polls} onVote={handleVote} isLoading={isLoading} />} />
+              <Route
+                path="/"
+                element={
+                  <HomePage polls={polls} onVote={handleVote} isLoading={isLoading} setPolls={setPolls} setIsLoading={setIsLoading} />
+                }
+              />
               <Route path="/create" element={<CreatePage onCreatePoll={handleCreatePoll} />} />
               <Route path="/template" element={<Home />} />
             </Routes>

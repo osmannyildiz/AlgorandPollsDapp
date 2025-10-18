@@ -24,7 +24,7 @@ import { SendParams, SendSingleTransactionResult, SendAtomicTransactionComposerR
 import { Address, encodeAddress, modelsv2, OnApplicationComplete, Transaction, TransactionSigner } from 'algosdk'
 import SimulateResponse = modelsv2.SimulateResponse
 
-export const APP_SPEC: Arc56Contract = {"name":"PollManager","structs":{},"methods":[{"name":"hello","args":[{"type":"string","name":"name"}],"returns":{"type":"string"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}}],"arcs":[22,28],"networks":{},"state":{"schema":{"global":{"ints":0,"bytes":0},"local":{"ints":0,"bytes":0}},"keys":{"global":{},"local":{},"box":{}},"maps":{"global":{},"local":{},"box":{}}},"bareActions":{"create":["NoOp"],"call":[]},"sourceInfo":{"approval":{"sourceInfo":[{"pc":[25],"errorMessage":"OnCompletion is not NoOp"},{"pc":[66],"errorMessage":"can only call when creating"},{"pc":[28],"errorMessage":"can only call when not creating"}],"pcOffsetMethod":"none"},"clear":{"sourceInfo":[],"pcOffsetMethod":"none"}},"source":{"approval":"I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuYXBwcm92YWxfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4biBOdW1BcHBBcmdzCiAgICBieiBtYWluX2JhcmVfcm91dGluZ0A2CiAgICBwdXNoYnl0ZXMgMHgwMmJlY2UxMSAvLyBtZXRob2QgImhlbGxvKHN0cmluZylzdHJpbmciCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAwCiAgICBtYXRjaCBtYWluX2hlbGxvX3JvdXRlQDMKCm1haW5fYWZ0ZXJfaWZfZWxzZUAxMDoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHB1c2hpbnQgMCAvLyAwCiAgICByZXR1cm4KCm1haW5faGVsbG9fcm91dGVAMzoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NgogICAgLy8gQGFiaW1ldGhvZCgpCiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGV4dHJhY3QgMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjYKICAgIC8vIEBhYmltZXRob2QoKQogICAgY2FsbHN1YiBoZWxsbwogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIHB1c2hieXRlcyAweDE1MWY3Yzc1CiAgICBzd2FwCiAgICBjb25jYXQKICAgIGxvZwogICAgcHVzaGludCAxIC8vIDEKICAgIHJldHVybgoKbWFpbl9iYXJlX3JvdXRpbmdANjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgIGJueiBtYWluX2FmdGVyX2lmX2Vsc2VAMTAKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICAhCiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIGNyZWF0aW5nCiAgICBwdXNoaW50IDEgLy8gMQogICAgcmV0dXJuCgoKLy8gc21hcnRfY29udHJhY3RzLnBvbGxfbWFuYWdlci5jb250cmFjdC5Qb2xsTWFuYWdlci5oZWxsbyhuYW1lOiBieXRlcykgLT4gYnl0ZXM6CmhlbGxvOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo2LTcKICAgIC8vIEBhYmltZXRob2QoKQogICAgLy8gZGVmIGhlbGxvKHNlbGYsIG5hbWU6IFN0cmluZykgLT4gU3RyaW5nOgogICAgcHJvdG8gMSAxCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjgKICAgIC8vIHJldHVybiAiSGVsbG8sICIgKyBuYW1lCiAgICBwdXNoYnl0ZXMgIkhlbGxvLCAiCiAgICBmcmFtZV9kaWcgLTEKICAgIGNvbmNhdAogICAgcmV0c3ViCg==","clear":"I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuY2xlYXJfc3RhdGVfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4K"},"byteCode":{"approval":"CjEbQQA0gAQCvs4RNhoAjgEAA4EAQzEZFEQxGEQ2GgFXAgCIACBJFRZXBgJMUIAEFR98dUxQsIEBQzEZQP/UMRgURIEBQ4oBAYAHSGVsbG8sIIv/UIk=","clear":"CoEBQw=="},"compilerInfo":{"compiler":"puya","compilerVersion":{"major":4,"minor":10,"patch":0}},"events":[],"templateVariables":{}} as unknown as Arc56Contract
+export const APP_SPEC: Arc56Contract = {"name":"PollManager","structs":{"PollData":[{"name":"question","type":"string"},{"name":"option_1","type":"string"},{"name":"option_2","type":"string"},{"name":"option_3","type":"string"},{"name":"option_4","type":"string"},{"name":"option_5","type":"string"},{"name":"option_1Votes","type":"uint64"},{"name":"option_2Votes","type":"uint64"},{"name":"option_3Votes","type":"uint64"},{"name":"option_4Votes","type":"uint64"},{"name":"option_5Votes","type":"uint64"},{"name":"voters","type":"address[]"}]},"methods":[{"name":"hello","args":[{"type":"string","name":"name"}],"returns":{"type":"string"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}},{"name":"create_poll","args":[{"type":"(string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[])","struct":"PollData","name":"poll_data"}],"returns":{"type":"void"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}},{"name":"vote_option_1","args":[{"type":"uint64","name":"poll_id"},{"type":"address","name":"caller"}],"returns":{"type":"void"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}},{"name":"vote_option_2","args":[{"type":"uint64","name":"poll_id"},{"type":"address","name":"caller"}],"returns":{"type":"void"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}},{"name":"vote_option_3","args":[{"type":"uint64","name":"poll_id"},{"type":"address","name":"caller"}],"returns":{"type":"void"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}},{"name":"vote_option_4","args":[{"type":"uint64","name":"poll_id"},{"type":"address","name":"caller"}],"returns":{"type":"void"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}},{"name":"vote_option_5","args":[{"type":"uint64","name":"poll_id"},{"type":"address","name":"caller"}],"returns":{"type":"void"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}},{"name":"did_vote","args":[{"type":"uint64","name":"poll_id"},{"type":"address","name":"caller"}],"returns":{"type":"bool"},"actions":{"create":[],"call":["NoOp"]},"readonly":false,"events":[],"recommendations":{}}],"arcs":[22,28],"networks":{},"state":{"schema":{"global":{"ints":0,"bytes":1},"local":{"ints":0,"bytes":0}},"keys":{"global":{"next_poll_id":{"keyType":"AVMString","valueType":"uint64","key":"bmV4dF9wb2xsX2lk"}},"local":{},"box":{}},"maps":{"global":{},"local":{},"box":{"box_map_struct":{"keyType":"uint64","valueType":"PollData","prefix":"cG9sbHM="}}}},"bareActions":{"create":["NoOp"],"call":[]},"sourceInfo":{"approval":{"sourceInfo":[{"pc":[347,424,501,578,655],"errorMessage":"Already voted"},{"pc":[766],"errorMessage":"Index access is out of bounds"},{"pc":[123,152,170,188,206,224,242,257],"errorMessage":"OnCompletion is not NoOp"},{"pc":[292],"errorMessage":"can only call when creating"},{"pc":[126,155,173,191,209,227,245,260],"errorMessage":"can only call when not creating"},{"pc":[354,431,508,585,662,732],"errorMessage":"check self.box_map_struct entry exists"},{"pc":[317],"errorMessage":"check self.next_poll_id exists"}],"pcOffsetMethod":"none"},"clear":{"sourceInfo":[],"pcOffsetMethod":"none"}},"source":{"approval":"I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBzbWFydF9jb250cmFjdHMucG9sbF9tYW5hZ2VyLmNvbnRyYWN0LlBvbGxNYW5hZ2VyLl9fYWxnb3B5X2VudHJ5cG9pbnRfd2l0aF9pbml0KCkgLT4gdWludDY0OgptYWluOgogICAgaW50Y2Jsb2NrIDEgMCAzMiA1MgogICAgYnl0ZWNibG9jayAicG9sbHMiICJuZXh0X3BvbGxfaWQiIDB4MTUxZjdjNzUKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBibnogbWFpbl9hZnRlcl9pZl9lbHNlQDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MjIKICAgIC8vIHNlbGYubmV4dF9wb2xsX2lkID0gYXJjNC5VSW50NjQoMSkKICAgIGJ5dGVjXzEgLy8gIm5leHRfcG9sbF9pZCIKICAgIHB1c2hieXRlcyAweDAwMDAwMDAwMDAwMDAwMDEKICAgIGFwcF9nbG9iYWxfcHV0CgptYWluX2FmdGVyX2lmX2Vsc2VAMjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MTkKICAgIC8vIGNsYXNzIFBvbGxNYW5hZ2VyKEFSQzRDb250cmFjdCk6CiAgICB0eG4gTnVtQXBwQXJncwogICAgYnogbWFpbl9iYXJlX3JvdXRpbmdAMTMKICAgIHB1c2hieXRlc3MgMHgwMmJlY2UxMSAweDU1MjQwZjE3IDB4NTUwMmE3OWIgMHg0NDM4NWFlNSAweGE2YjE5ZjYxIDB4MTcyMDU0ZGIgMHhkOWZhY2MyZiAweDg2OTI2YWJhIC8vIG1ldGhvZCAiaGVsbG8oc3RyaW5nKXN0cmluZyIsIG1ldGhvZCAiY3JlYXRlX3BvbGwoKHN0cmluZyxzdHJpbmcsc3RyaW5nLHN0cmluZyxzdHJpbmcsc3RyaW5nLHVpbnQ2NCx1aW50NjQsdWludDY0LHVpbnQ2NCx1aW50NjQsYWRkcmVzc1tdKSl2b2lkIiwgbWV0aG9kICJ2b3RlX29wdGlvbl8xKHVpbnQ2NCxhZGRyZXNzKXZvaWQiLCBtZXRob2QgInZvdGVfb3B0aW9uXzIodWludDY0LGFkZHJlc3Mpdm9pZCIsIG1ldGhvZCAidm90ZV9vcHRpb25fMyh1aW50NjQsYWRkcmVzcyl2b2lkIiwgbWV0aG9kICJ2b3RlX29wdGlvbl80KHVpbnQ2NCxhZGRyZXNzKXZvaWQiLCBtZXRob2QgInZvdGVfb3B0aW9uXzUodWludDY0LGFkZHJlc3Mpdm9pZCIsIG1ldGhvZCAiZGlkX3ZvdGUodWludDY0LGFkZHJlc3MpYm9vbCIKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDAKICAgIG1hdGNoIG1haW5faGVsbG9fcm91dGVANSBtYWluX2NyZWF0ZV9wb2xsX3JvdXRlQDYgbWFpbl92b3RlX29wdGlvbl8xX3JvdXRlQDcgbWFpbl92b3RlX29wdGlvbl8yX3JvdXRlQDggbWFpbl92b3RlX29wdGlvbl8zX3JvdXRlQDkgbWFpbl92b3RlX29wdGlvbl80X3JvdXRlQDEwIG1haW5fdm90ZV9vcHRpb25fNV9yb3V0ZUAxMSBtYWluX2RpZF92b3RlX3JvdXRlQDEyCgptYWluX2FmdGVyX2lmX2Vsc2VAMTU6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjE5CiAgICAvLyBjbGFzcyBQb2xsTWFuYWdlcihBUkM0Q29udHJhY3QpOgogICAgaW50Y18xIC8vIDAKICAgIHJldHVybgoKbWFpbl9kaWRfdm90ZV9yb3V0ZUAxMjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjYKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjE5CiAgICAvLyBjbGFzcyBQb2xsTWFuYWdlcihBUkM0Q29udHJhY3QpOgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo2NgogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICBjYWxsc3ViIGRpZF92b3RlCiAgICBwdXNoYnl0ZXMgMHgwMAogICAgaW50Y18xIC8vIDAKICAgIHVuY292ZXIgMgogICAgc2V0Yml0CiAgICBieXRlY18yIC8vIDB4MTUxZjdjNzUKICAgIHN3YXAKICAgIGNvbmNhdAogICAgbG9nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX3ZvdGVfb3B0aW9uXzVfcm91dGVAMTE6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjYwCiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjAKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiB2b3RlX29wdGlvbl81CiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX3ZvdGVfb3B0aW9uXzRfcm91dGVAMTA6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjU0CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTQKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiB2b3RlX29wdGlvbl80CiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX3ZvdGVfb3B0aW9uXzNfcm91dGVAOToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDgKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgdHhuIE9uQ29tcGxldGlvbgogICAgIQogICAgYXNzZXJ0IC8vIE9uQ29tcGxldGlvbiBpcyBub3QgTm9PcAogICAgdHhuIEFwcGxpY2F0aW9uSUQKICAgIGFzc2VydCAvLyBjYW4gb25seSBjYWxsIHdoZW4gbm90IGNyZWF0aW5nCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjE5CiAgICAvLyBjbGFzcyBQb2xsTWFuYWdlcihBUkM0Q29udHJhY3QpOgogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMQogICAgdHhuYSBBcHBsaWNhdGlvbkFyZ3MgMgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo0OAogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICBjYWxsc3ViIHZvdGVfb3B0aW9uXzMKICAgIGludGNfMCAvLyAxCiAgICByZXR1cm4KCm1haW5fdm90ZV9vcHRpb25fMl9yb3V0ZUA4OgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo0MgogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICB0eG4gT25Db21wbGV0aW9uCiAgICAhCiAgICBhc3NlcnQgLy8gT25Db21wbGV0aW9uIGlzIG5vdCBOb09wCiAgICB0eG4gQXBwbGljYXRpb25JRAogICAgYXNzZXJ0IC8vIGNhbiBvbmx5IGNhbGwgd2hlbiBub3QgY3JlYXRpbmcKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MTkKICAgIC8vIGNsYXNzIFBvbGxNYW5hZ2VyKEFSQzRDb250cmFjdCk6CiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAxCiAgICB0eG5hIEFwcGxpY2F0aW9uQXJncyAyCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQyCiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIGNhbGxzdWIgdm90ZV9vcHRpb25fMgogICAgaW50Y18wIC8vIDEKICAgIHJldHVybgoKbWFpbl92b3RlX29wdGlvbl8xX3JvdXRlQDc6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjM2CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDIKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MzYKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiB2b3RlX29wdGlvbl8xCiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgptYWluX2NyZWF0ZV9wb2xsX3JvdXRlQDY6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjI4CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MjgKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgY2FsbHN1YiBjcmVhdGVfcG9sbAogICAgaW50Y18wIC8vIDEKICAgIHJldHVybgoKbWFpbl9oZWxsb19yb3V0ZUA1OgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyNAogICAgLy8gQGFyYzQuYWJpbWV0aG9kKCkKICAgIHR4biBPbkNvbXBsZXRpb24KICAgICEKICAgIGFzc2VydCAvLyBPbkNvbXBsZXRpb24gaXMgbm90IE5vT3AKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIG5vdCBjcmVhdGluZwogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4bmEgQXBwbGljYXRpb25BcmdzIDEKICAgIGV4dHJhY3QgMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjI0CiAgICAvLyBAYXJjNC5hYmltZXRob2QoKQogICAgY2FsbHN1YiBoZWxsbwogICAgZHVwCiAgICBsZW4KICAgIGl0b2IKICAgIGV4dHJhY3QgNiAyCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGJ5dGVjXzIgLy8gMHgxNTFmN2M3NQogICAgc3dhcAogICAgY29uY2F0CiAgICBsb2cKICAgIGludGNfMCAvLyAxCiAgICByZXR1cm4KCm1haW5fYmFyZV9yb3V0aW5nQDEzOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToxOQogICAgLy8gY2xhc3MgUG9sbE1hbmFnZXIoQVJDNENvbnRyYWN0KToKICAgIHR4biBPbkNvbXBsZXRpb24KICAgIGJueiBtYWluX2FmdGVyX2lmX2Vsc2VAMTUKICAgIHR4biBBcHBsaWNhdGlvbklECiAgICAhCiAgICBhc3NlcnQgLy8gY2FuIG9ubHkgY2FsbCB3aGVuIGNyZWF0aW5nCiAgICBpbnRjXzAgLy8gMQogICAgcmV0dXJuCgoKLy8gc21hcnRfY29udHJhY3RzLnBvbGxfbWFuYWdlci5jb250cmFjdC5Qb2xsTWFuYWdlci5oZWxsbyhuYW1lOiBieXRlcykgLT4gYnl0ZXM6CmhlbGxvOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyNC0yNQogICAgLy8gQGFyYzQuYWJpbWV0aG9kKCkKICAgIC8vIGRlZiBoZWxsbyhzZWxmLCBuYW1lOiBTdHJpbmcpIC0+IFN0cmluZzoKICAgIHByb3RvIDEgMQogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyNgogICAgLy8gcmV0dXJuICJIZWxsbywgIiArIG5hbWUKICAgIHB1c2hieXRlcyAiSGVsbG8sICIKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICByZXRzdWIKCgovLyBzbWFydF9jb250cmFjdHMucG9sbF9tYW5hZ2VyLmNvbnRyYWN0LlBvbGxNYW5hZ2VyLmNyZWF0ZV9wb2xsKHBvbGxfZGF0YTogYnl0ZXMpIC0+IHZvaWQ6CmNyZWF0ZV9wb2xsOgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weToyOC0zMgogICAgLy8gQGFyYzQuYWJpbWV0aG9kCiAgICAvLyBkZWYgY3JlYXRlX3BvbGwoCiAgICAvLyAgICAgc2VsZiwKICAgIC8vICAgICBwb2xsX2RhdGE6IFBvbGxEYXRhLAogICAgLy8gKSAtPiBOb25lOgogICAgcHJvdG8gMSAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjMzCiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3NlbGYubmV4dF9wb2xsX2lkXSA9IHBvbGxfZGF0YS5jb3B5KCkKICAgIGludGNfMSAvLyAwCiAgICBieXRlY18xIC8vICJuZXh0X3BvbGxfaWQiCiAgICBhcHBfZ2xvYmFsX2dldF9leAogICAgYXNzZXJ0IC8vIGNoZWNrIHNlbGYubmV4dF9wb2xsX2lkIGV4aXN0cwogICAgYnl0ZWNfMCAvLyAicG9sbHMiCiAgICBkaWcgMQogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9kZWwKICAgIHBvcAogICAgZnJhbWVfZGlnIC0xCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjM0CiAgICAvLyBzZWxmLm5leHRfcG9sbF9pZCA9IGFyYzQuVUludDY0KHNlbGYubmV4dF9wb2xsX2lkLm5hdGl2ZSArIDEpCiAgICBidG9pCiAgICBpbnRjXzAgLy8gMQogICAgKwogICAgaXRvYgogICAgYnl0ZWNfMSAvLyAibmV4dF9wb2xsX2lkIgogICAgc3dhcAogICAgYXBwX2dsb2JhbF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fMShwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fMToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MzYtMzcKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzEoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjM4CiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6MzkKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzFfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl8xX3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDEyIC8vIDEyCiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDEyCiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQwCiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fMihwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fMjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDItNDMKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzIoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQ0CiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDUKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzJfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl8yX3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDIwIC8vIDIwCiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDIwCiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjQ2CiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fMyhwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fMzoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NDgtNDkKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzMoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjUwCiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTEKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzNfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl8zX3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDI4IC8vIDI4CiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDI4CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjUyCiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fNChwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fNDoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTQtNTUKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzQoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjU2CiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NTcKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzRfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl80X3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDM2IC8vIDM2CiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDM2CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjU4CiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIudm90ZV9vcHRpb25fNShwb2xsX2lkOiBieXRlcywgY2FsbGVyOiBieXRlcykgLT4gdm9pZDoKdm90ZV9vcHRpb25fNToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjAtNjEKICAgIC8vIEBhcmM0LmFiaW1ldGhvZAogICAgLy8gZGVmIHZvdGVfb3B0aW9uXzUoc2VsZiwgcG9sbF9pZDogYXJjNC5VSW50NjQsIGNhbGxlcjogYXJjNC5BZGRyZXNzKSAtPiBOb25lOgogICAgcHJvdG8gMiAwCiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjYyCiAgICAvLyBhc3NlcnQgbm90IHNlbGYuZGlkX3ZvdGUocG9sbF9pZCwgY2FsbGVyKSwgIkFscmVhZHkgdm90ZWQiCiAgICBmcmFtZV9kaWcgLTIKICAgIGZyYW1lX2RpZyAtMQogICAgY2FsbHN1YiBkaWRfdm90ZQogICAgIQogICAgYXNzZXJ0IC8vIEFscmVhZHkgdm90ZWQKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjMKICAgIC8vIHNlbGYuYm94X21hcF9zdHJ1Y3RbcG9sbF9pZF0ub3B0aW9uXzVfdm90ZXMgPSBhcmM0LlVJbnQ2NChzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLm9wdGlvbl81X3ZvdGVzLm5hdGl2ZSArIDEpCiAgICBieXRlY18wIC8vICJwb2xscyIKICAgIGZyYW1lX2RpZyAtMgogICAgY29uY2F0CiAgICBkdXAKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBwdXNoaW50IDQ0IC8vIDQ0CiAgICBleHRyYWN0X3VpbnQ2NAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGl0b2IKICAgIHJlcGxhY2UyIDQ0CiAgICBkaWcgMQogICAgYm94X2RlbAogICAgcG9wCiAgICBkdXAyCiAgICBib3hfcHV0CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjY0CiAgICAvLyBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVycy5hcHBlbmQoY2FsbGVyKQogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBkaWcgMgogICAgZGlnIDIKICAgIHVuY292ZXIgMgogICAgc3Vic3RyaW5nMwogICAgZXh0cmFjdCAyIDAKICAgIGZyYW1lX2RpZyAtMQogICAgY29uY2F0CiAgICBkdXAKICAgIGxlbgogICAgaW50Y18yIC8vIDMyCiAgICAvCiAgICBpdG9iCiAgICBleHRyYWN0IDYgMgogICAgc3dhcAogICAgY29uY2F0CiAgICB1bmNvdmVyIDIKICAgIGludGNfMSAvLyAwCiAgICB1bmNvdmVyIDMKICAgIGV4dHJhY3QzCiAgICBzd2FwCiAgICBjb25jYXQKICAgIGRpZyAxCiAgICBib3hfZGVsCiAgICBwb3AKICAgIGJveF9wdXQKICAgIHJldHN1YgoKCi8vIHNtYXJ0X2NvbnRyYWN0cy5wb2xsX21hbmFnZXIuY29udHJhY3QuUG9sbE1hbmFnZXIuZGlkX3ZvdGUocG9sbF9pZDogYnl0ZXMsIGNhbGxlcjogYnl0ZXMpIC0+IHVpbnQ2NDoKZGlkX3ZvdGU6CiAgICAvLyBzbWFydF9jb250cmFjdHMvcG9sbF9tYW5hZ2VyL2NvbnRyYWN0LnB5OjY2LTY3CiAgICAvLyBAYXJjNC5hYmltZXRob2QKICAgIC8vIGRlZiBkaWRfdm90ZShzZWxmLCBwb2xsX2lkOiBhcmM0LlVJbnQ2NCwgY2FsbGVyOiBhcmM0LkFkZHJlc3MpIC0+IGJvb2w6CiAgICBwcm90byAyIDEKICAgIHB1c2hieXRlcyAiIgogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo2OAogICAgLy8gZm91bmQgPSBGYWxzZQogICAgaW50Y18xIC8vIDAKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjkKICAgIC8vIGZvciB2b3RlciBpbiBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVyczoKICAgIGJ5dGVjXzAgLy8gInBvbGxzIgogICAgZnJhbWVfZGlnIC0yCiAgICBjb25jYXQKICAgIGJveF9nZXQKICAgIGFzc2VydCAvLyBjaGVjayBzZWxmLmJveF9tYXBfc3RydWN0IGVudHJ5IGV4aXN0cwogICAgZHVwCiAgICBpbnRjXzMgLy8gNTIKICAgIGV4dHJhY3RfdWludDE2CiAgICBkaWcgMQogICAgbGVuCiAgICBzdWJzdHJpbmczCiAgICBkdXAKICAgIGludGNfMSAvLyAwCiAgICBleHRyYWN0X3VpbnQxNgogICAgaW50Y18xIC8vIDAKCmRpZF92b3RlX2Zvcl9oZWFkZXJAMToKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NjkKICAgIC8vIGZvciB2b3RlciBpbiBzZWxmLmJveF9tYXBfc3RydWN0W3BvbGxfaWRdLnZvdGVyczoKICAgIGZyYW1lX2RpZyA0CiAgICBmcmFtZV9kaWcgMwogICAgPAogICAgZnJhbWVfZGlnIDEKICAgIGZyYW1lX2J1cnkgMAogICAgYnogZGlkX3ZvdGVfYWZ0ZXJfZm9yQDYKICAgIGZyYW1lX2RpZyAyCiAgICBleHRyYWN0IDIgMAogICAgZnJhbWVfZGlnIDQKICAgIGludGNfMiAvLyAzMgogICAgKgogICAgaW50Y18yIC8vIDMyCiAgICBleHRyYWN0MyAvLyBvbiBlcnJvcjogSW5kZXggYWNjZXNzIGlzIG91dCBvZiBib3VuZHMKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NzAKICAgIC8vIGlmIGNhbGxlciA9PSB2b3RlcjoKICAgIGZyYW1lX2RpZyAtMQogICAgPT0KICAgIGJ6IGRpZF92b3RlX2FmdGVyX2lmX2Vsc2VANAogICAgLy8gc21hcnRfY29udHJhY3RzL3BvbGxfbWFuYWdlci9jb250cmFjdC5weTo3MQogICAgLy8gZm91bmQgPSBUcnVlCiAgICBpbnRjXzAgLy8gMQogICAgZnJhbWVfYnVyeSAwCgpkaWRfdm90ZV9hZnRlcl9mb3JANjoKICAgIC8vIHNtYXJ0X2NvbnRyYWN0cy9wb2xsX21hbmFnZXIvY29udHJhY3QucHk6NzMKICAgIC8vIHJldHVybiBmb3VuZAogICAgcmV0c3ViCgpkaWRfdm90ZV9hZnRlcl9pZl9lbHNlQDQ6CiAgICBmcmFtZV9kaWcgNAogICAgaW50Y18wIC8vIDEKICAgICsKICAgIGZyYW1lX2J1cnkgNAogICAgYiBkaWRfdm90ZV9mb3JfaGVhZGVyQDEK","clear":"I3ByYWdtYSB2ZXJzaW9uIDEwCiNwcmFnbWEgdHlwZXRyYWNrIGZhbHNlCgovLyBhbGdvcHkuYXJjNC5BUkM0Q29udHJhY3QuY2xlYXJfc3RhdGVfcHJvZ3JhbSgpIC0+IHVpbnQ2NDoKbWFpbjoKICAgIHB1c2hpbnQgMSAvLyAxCiAgICByZXR1cm4K"},"byteCode":{"approval":"CiAEAQAgNCYDBXBvbGxzDG5leHRfcG9sbF9pZAQVH3x1MRhAAAwpgAgAAAAAAAAAAWcxG0EA5YIIBAK+zhEEVSQPFwRVAqebBEQ4WuUEprGfYQQXIFTbBNn6zC8EhpJqujYaAI4IAIgAeQBnAFUAQwAxAB8AAiNDMRkURDEYRDYaATYaAogCSYABACNPAlQqTFCwIkMxGRREMRhENhoBNhoCiAHfIkMxGRREMRhENhoBNhoCiAGAIkMxGRREMRhENhoBNhoCiAEhIkMxGRREMRhENhoBNhoCiADCIkMxGRREMRhENhoBNhoCiABjIkMxGRREMRhENhoBiAA7IkMxGRREMRhENhoBVwIAiAAZSRUWVwYCTFAqTFCwIkMxGUD/VTEYFEQiQ4oBAYAHSGVsbG8sIIv/UImKAQAjKWVEKEsBUEm8SIv/vxciCBYpTGeJigIAi/6L/4gBdxREKIv+UEm+REmBDFsiCBZcDEsBvEhKv0klWUsBFUsCSwJPAlJXAgCL/1BJFSQKFlcGAkxQTwIjTwNYTFBLAbxIv4mKAgCL/ov/iAEqFEQoi/5QSb5ESYEUWyIIFlwUSwG8SEq/SSVZSwEVSwJLAk8CUlcCAIv/UEkVJAoWVwYCTFBPAiNPA1hMUEsBvEi/iYoCAIv+i/+IAN0URCiL/lBJvkRJgRxbIggWXBxLAbxISr9JJVlLARVLAksCTwJSVwIAi/9QSRUkChZXBgJMUE8CI08DWExQSwG8SL+JigIAi/6L/4gAkBREKIv+UEm+REmBJFsiCBZcJEsBvEhKv0klWUsBFUsCSwJPAlJXAgCL/1BJFSQKFlcGAkxQTwIjTwNYTFBLAbxIv4mKAgCL/ov/iABDFEQoi/5QSb5ESYEsWyIIFlwsSwG8SEq/SSVZSwEVSwJLAk8CUlcCAIv/UEkVJAoWVwYCTFBPAiNPA1hMUEsBvEi/iYoCAYAAIyiL/lC+REklWUsBFVJJI1kjiwSLAwyLAYwAQQAUiwJXAgCLBCQLJFiL/xJBAAQijACJiwQiCIwEQv/W","clear":"CoEBQw=="},"compilerInfo":{"compiler":"puya","compilerVersion":{"major":4,"minor":10,"patch":0}},"events":[],"templateVariables":{}} as unknown as Arc56Contract
 
 /**
  * A state record containing binary data
@@ -63,6 +63,31 @@ export type Expand<T> = T extends (...args: infer A) => infer R
     : never
 
 
+// Type definitions for ARC-56 structs
+
+export type PollData = {
+  question: string,
+  option_1: string,
+  option_2: string,
+  option_3: string,
+  option_4: string,
+  option_5: string,
+  option_1Votes: bigint,
+  option_2Votes: bigint,
+  option_3Votes: bigint,
+  option_4Votes: bigint,
+  option_5Votes: bigint,
+  voters: string[]
+}
+
+
+/**
+ * Converts the ABI tuple representation of a PollData to the struct representation
+ */
+export function PollDataFromTuple(abiTuple: [string, string, string, string, string, string, bigint, bigint, bigint, bigint, bigint, string[]]) {
+  return getABIStructFromABITuple(abiTuple, APP_SPEC.structs.PollData, APP_SPEC.structs) as PollData
+}
+
 /**
  * The argument types for the PollManager contract
  */
@@ -74,12 +99,46 @@ export type PollManagerArgs = {
     'hello(string)string': {
       name: string
     }
+    'create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void': {
+      pollData: PollData
+    }
+    'vote_option_1(uint64,address)void': {
+      pollId: bigint | number
+      caller: string
+    }
+    'vote_option_2(uint64,address)void': {
+      pollId: bigint | number
+      caller: string
+    }
+    'vote_option_3(uint64,address)void': {
+      pollId: bigint | number
+      caller: string
+    }
+    'vote_option_4(uint64,address)void': {
+      pollId: bigint | number
+      caller: string
+    }
+    'vote_option_5(uint64,address)void': {
+      pollId: bigint | number
+      caller: string
+    }
+    'did_vote(uint64,address)bool': {
+      pollId: bigint | number
+      caller: string
+    }
   }
   /**
    * The tuple representation of the arguments for each method
    */
   tuple: {
     'hello(string)string': [name: string]
+    'create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void': [pollData: PollData]
+    'vote_option_1(uint64,address)void': [pollId: bigint | number, caller: string]
+    'vote_option_2(uint64,address)void': [pollId: bigint | number, caller: string]
+    'vote_option_3(uint64,address)void': [pollId: bigint | number, caller: string]
+    'vote_option_4(uint64,address)void': [pollId: bigint | number, caller: string]
+    'vote_option_5(uint64,address)void': [pollId: bigint | number, caller: string]
+    'did_vote(uint64,address)bool': [pollId: bigint | number, caller: string]
   }
 }
 
@@ -88,6 +147,13 @@ export type PollManagerArgs = {
  */
 export type PollManagerReturns = {
   'hello(string)string': string
+  'create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void': void
+  'vote_option_1(uint64,address)void': void
+  'vote_option_2(uint64,address)void': void
+  'vote_option_3(uint64,address)void': void
+  'vote_option_4(uint64,address)void': void
+  'vote_option_5(uint64,address)void': void
+  'did_vote(uint64,address)bool': boolean
 }
 
 /**
@@ -103,6 +169,58 @@ export type PollManagerTypes = {
       argsTuple: PollManagerArgs['tuple']['hello(string)string']
       returns: PollManagerReturns['hello(string)string']
     }>
+    & Record<'create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void' | 'create_poll', {
+      argsObj: PollManagerArgs['obj']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']
+      argsTuple: PollManagerArgs['tuple']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']
+      returns: PollManagerReturns['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']
+    }>
+    & Record<'vote_option_1(uint64,address)void' | 'vote_option_1', {
+      argsObj: PollManagerArgs['obj']['vote_option_1(uint64,address)void']
+      argsTuple: PollManagerArgs['tuple']['vote_option_1(uint64,address)void']
+      returns: PollManagerReturns['vote_option_1(uint64,address)void']
+    }>
+    & Record<'vote_option_2(uint64,address)void' | 'vote_option_2', {
+      argsObj: PollManagerArgs['obj']['vote_option_2(uint64,address)void']
+      argsTuple: PollManagerArgs['tuple']['vote_option_2(uint64,address)void']
+      returns: PollManagerReturns['vote_option_2(uint64,address)void']
+    }>
+    & Record<'vote_option_3(uint64,address)void' | 'vote_option_3', {
+      argsObj: PollManagerArgs['obj']['vote_option_3(uint64,address)void']
+      argsTuple: PollManagerArgs['tuple']['vote_option_3(uint64,address)void']
+      returns: PollManagerReturns['vote_option_3(uint64,address)void']
+    }>
+    & Record<'vote_option_4(uint64,address)void' | 'vote_option_4', {
+      argsObj: PollManagerArgs['obj']['vote_option_4(uint64,address)void']
+      argsTuple: PollManagerArgs['tuple']['vote_option_4(uint64,address)void']
+      returns: PollManagerReturns['vote_option_4(uint64,address)void']
+    }>
+    & Record<'vote_option_5(uint64,address)void' | 'vote_option_5', {
+      argsObj: PollManagerArgs['obj']['vote_option_5(uint64,address)void']
+      argsTuple: PollManagerArgs['tuple']['vote_option_5(uint64,address)void']
+      returns: PollManagerReturns['vote_option_5(uint64,address)void']
+    }>
+    & Record<'did_vote(uint64,address)bool' | 'did_vote', {
+      argsObj: PollManagerArgs['obj']['did_vote(uint64,address)bool']
+      argsTuple: PollManagerArgs['tuple']['did_vote(uint64,address)bool']
+      returns: PollManagerReturns['did_vote(uint64,address)bool']
+    }>
+  /**
+   * Defines the shape of the state of the application.
+   */
+  state: {
+    global: {
+      keys: {
+        nextPollId: bigint
+      }
+      maps: {}
+    }
+    box: {
+      keys: {}
+      maps: {
+        boxMapStruct: Map<bigint | number, PollData>
+      }
+    }
+  }
 }
 
 /**
@@ -131,6 +249,16 @@ export type MethodArgs<TSignature extends PollManagerSignatures> = PollManagerTy
  * Maps a method signature from the PollManager smart contract to the method's return type
  */
 export type MethodReturn<TSignature extends PollManagerSignatures> = PollManagerTypes['methods'][TSignature]['returns']
+
+/**
+ * Defines the shape of the keyed global state of the application.
+ */
+export type GlobalKeysState = PollManagerTypes['state']['global']['keys']
+
+/**
+ * Defines the shape of the keyed box state of the application.
+ */
+export type BoxKeysState = PollManagerTypes['state']['box']['keys']
 
 
 /**
@@ -164,6 +292,97 @@ export abstract class PollManagerParamsFactory {
       ...params,
       method: 'hello(string)string' as const,
       args: Array.isArray(params.args) ? params.args : [params.args.name],
+    }
+  }
+  /**
+   * Constructs a no op call for the create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void ABI method
+   *
+   * @param params Parameters for the call
+   * @returns An `AppClientMethodCallParams` object for the call
+   */
+  static createPoll(params: CallParams<PollManagerArgs['obj']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'] | PollManagerArgs['tuple']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']> & CallOnComplete): AppClientMethodCallParams & CallOnComplete {
+    return {
+      ...params,
+      method: 'create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void' as const,
+      args: Array.isArray(params.args) ? params.args : [params.args.pollData],
+    }
+  }
+  /**
+   * Constructs a no op call for the vote_option_1(uint64,address)void ABI method
+   *
+   * @param params Parameters for the call
+   * @returns An `AppClientMethodCallParams` object for the call
+   */
+  static voteOption_1(params: CallParams<PollManagerArgs['obj']['vote_option_1(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_1(uint64,address)void']> & CallOnComplete): AppClientMethodCallParams & CallOnComplete {
+    return {
+      ...params,
+      method: 'vote_option_1(uint64,address)void' as const,
+      args: Array.isArray(params.args) ? params.args : [params.args.pollId, params.args.caller],
+    }
+  }
+  /**
+   * Constructs a no op call for the vote_option_2(uint64,address)void ABI method
+   *
+   * @param params Parameters for the call
+   * @returns An `AppClientMethodCallParams` object for the call
+   */
+  static voteOption_2(params: CallParams<PollManagerArgs['obj']['vote_option_2(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_2(uint64,address)void']> & CallOnComplete): AppClientMethodCallParams & CallOnComplete {
+    return {
+      ...params,
+      method: 'vote_option_2(uint64,address)void' as const,
+      args: Array.isArray(params.args) ? params.args : [params.args.pollId, params.args.caller],
+    }
+  }
+  /**
+   * Constructs a no op call for the vote_option_3(uint64,address)void ABI method
+   *
+   * @param params Parameters for the call
+   * @returns An `AppClientMethodCallParams` object for the call
+   */
+  static voteOption_3(params: CallParams<PollManagerArgs['obj']['vote_option_3(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_3(uint64,address)void']> & CallOnComplete): AppClientMethodCallParams & CallOnComplete {
+    return {
+      ...params,
+      method: 'vote_option_3(uint64,address)void' as const,
+      args: Array.isArray(params.args) ? params.args : [params.args.pollId, params.args.caller],
+    }
+  }
+  /**
+   * Constructs a no op call for the vote_option_4(uint64,address)void ABI method
+   *
+   * @param params Parameters for the call
+   * @returns An `AppClientMethodCallParams` object for the call
+   */
+  static voteOption_4(params: CallParams<PollManagerArgs['obj']['vote_option_4(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_4(uint64,address)void']> & CallOnComplete): AppClientMethodCallParams & CallOnComplete {
+    return {
+      ...params,
+      method: 'vote_option_4(uint64,address)void' as const,
+      args: Array.isArray(params.args) ? params.args : [params.args.pollId, params.args.caller],
+    }
+  }
+  /**
+   * Constructs a no op call for the vote_option_5(uint64,address)void ABI method
+   *
+   * @param params Parameters for the call
+   * @returns An `AppClientMethodCallParams` object for the call
+   */
+  static voteOption_5(params: CallParams<PollManagerArgs['obj']['vote_option_5(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_5(uint64,address)void']> & CallOnComplete): AppClientMethodCallParams & CallOnComplete {
+    return {
+      ...params,
+      method: 'vote_option_5(uint64,address)void' as const,
+      args: Array.isArray(params.args) ? params.args : [params.args.pollId, params.args.caller],
+    }
+  }
+  /**
+   * Constructs a no op call for the did_vote(uint64,address)bool ABI method
+   *
+   * @param params Parameters for the call
+   * @returns An `AppClientMethodCallParams` object for the call
+   */
+  static didVote(params: CallParams<PollManagerArgs['obj']['did_vote(uint64,address)bool'] | PollManagerArgs['tuple']['did_vote(uint64,address)bool']> & CallOnComplete): AppClientMethodCallParams & CallOnComplete {
+    return {
+      ...params,
+      method: 'did_vote(uint64,address)bool' as const,
+      args: Array.isArray(params.args) ? params.args : [params.args.pollId, params.args.caller],
     }
   }
 }
@@ -416,6 +635,76 @@ export class PollManagerClient {
       return this.appClient.params.call(PollManagerParamsFactory.hello(params))
     },
 
+    /**
+     * Makes a call to the PollManager smart contract using the `create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call params
+     */
+    createPoll: (params: CallParams<PollManagerArgs['obj']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'] | PollManagerArgs['tuple']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.params.call(PollManagerParamsFactory.createPoll(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_1(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call params
+     */
+    voteOption_1: (params: CallParams<PollManagerArgs['obj']['vote_option_1(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_1(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.params.call(PollManagerParamsFactory.voteOption_1(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_2(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call params
+     */
+    voteOption_2: (params: CallParams<PollManagerArgs['obj']['vote_option_2(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_2(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.params.call(PollManagerParamsFactory.voteOption_2(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_3(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call params
+     */
+    voteOption_3: (params: CallParams<PollManagerArgs['obj']['vote_option_3(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_3(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.params.call(PollManagerParamsFactory.voteOption_3(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_4(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call params
+     */
+    voteOption_4: (params: CallParams<PollManagerArgs['obj']['vote_option_4(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_4(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.params.call(PollManagerParamsFactory.voteOption_4(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_5(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call params
+     */
+    voteOption_5: (params: CallParams<PollManagerArgs['obj']['vote_option_5(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_5(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.params.call(PollManagerParamsFactory.voteOption_5(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `did_vote(uint64,address)bool` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call params
+     */
+    didVote: (params: CallParams<PollManagerArgs['obj']['did_vote(uint64,address)bool'] | PollManagerArgs['tuple']['did_vote(uint64,address)bool']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.params.call(PollManagerParamsFactory.didVote(params))
+    },
+
   }
 
   /**
@@ -440,6 +729,76 @@ export class PollManagerClient {
      */
     hello: (params: CallParams<PollManagerArgs['obj']['hello(string)string'] | PollManagerArgs['tuple']['hello(string)string']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
       return this.appClient.createTransaction.call(PollManagerParamsFactory.hello(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call transaction
+     */
+    createPoll: (params: CallParams<PollManagerArgs['obj']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'] | PollManagerArgs['tuple']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.createTransaction.call(PollManagerParamsFactory.createPoll(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_1(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call transaction
+     */
+    voteOption_1: (params: CallParams<PollManagerArgs['obj']['vote_option_1(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_1(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.createTransaction.call(PollManagerParamsFactory.voteOption_1(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_2(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call transaction
+     */
+    voteOption_2: (params: CallParams<PollManagerArgs['obj']['vote_option_2(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_2(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.createTransaction.call(PollManagerParamsFactory.voteOption_2(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_3(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call transaction
+     */
+    voteOption_3: (params: CallParams<PollManagerArgs['obj']['vote_option_3(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_3(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.createTransaction.call(PollManagerParamsFactory.voteOption_3(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_4(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call transaction
+     */
+    voteOption_4: (params: CallParams<PollManagerArgs['obj']['vote_option_4(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_4(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.createTransaction.call(PollManagerParamsFactory.voteOption_4(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_5(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call transaction
+     */
+    voteOption_5: (params: CallParams<PollManagerArgs['obj']['vote_option_5(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_5(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.createTransaction.call(PollManagerParamsFactory.voteOption_5(params))
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `did_vote(uint64,address)bool` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call transaction
+     */
+    didVote: (params: CallParams<PollManagerArgs['obj']['did_vote(uint64,address)bool'] | PollManagerArgs['tuple']['did_vote(uint64,address)bool']> & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      return this.appClient.createTransaction.call(PollManagerParamsFactory.didVote(params))
     },
 
   }
@@ -469,6 +828,83 @@ export class PollManagerClient {
       return {...result, return: result.return as unknown as (undefined | PollManagerReturns['hello(string)string'])}
     },
 
+    /**
+     * Makes a call to the PollManager smart contract using the `create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call result
+     */
+    createPoll: async (params: CallParams<PollManagerArgs['obj']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'] | PollManagerArgs['tuple']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']> & SendParams & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      const result = await this.appClient.send.call(PollManagerParamsFactory.createPoll(params))
+      return {...result, return: result.return as unknown as (undefined | PollManagerReturns['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'])}
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_1(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call result
+     */
+    voteOption_1: async (params: CallParams<PollManagerArgs['obj']['vote_option_1(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_1(uint64,address)void']> & SendParams & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      const result = await this.appClient.send.call(PollManagerParamsFactory.voteOption_1(params))
+      return {...result, return: result.return as unknown as (undefined | PollManagerReturns['vote_option_1(uint64,address)void'])}
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_2(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call result
+     */
+    voteOption_2: async (params: CallParams<PollManagerArgs['obj']['vote_option_2(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_2(uint64,address)void']> & SendParams & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      const result = await this.appClient.send.call(PollManagerParamsFactory.voteOption_2(params))
+      return {...result, return: result.return as unknown as (undefined | PollManagerReturns['vote_option_2(uint64,address)void'])}
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_3(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call result
+     */
+    voteOption_3: async (params: CallParams<PollManagerArgs['obj']['vote_option_3(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_3(uint64,address)void']> & SendParams & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      const result = await this.appClient.send.call(PollManagerParamsFactory.voteOption_3(params))
+      return {...result, return: result.return as unknown as (undefined | PollManagerReturns['vote_option_3(uint64,address)void'])}
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_4(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call result
+     */
+    voteOption_4: async (params: CallParams<PollManagerArgs['obj']['vote_option_4(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_4(uint64,address)void']> & SendParams & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      const result = await this.appClient.send.call(PollManagerParamsFactory.voteOption_4(params))
+      return {...result, return: result.return as unknown as (undefined | PollManagerReturns['vote_option_4(uint64,address)void'])}
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `vote_option_5(uint64,address)void` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call result
+     */
+    voteOption_5: async (params: CallParams<PollManagerArgs['obj']['vote_option_5(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_5(uint64,address)void']> & SendParams & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      const result = await this.appClient.send.call(PollManagerParamsFactory.voteOption_5(params))
+      return {...result, return: result.return as unknown as (undefined | PollManagerReturns['vote_option_5(uint64,address)void'])}
+    },
+
+    /**
+     * Makes a call to the PollManager smart contract using the `did_vote(uint64,address)bool` ABI method.
+     *
+     * @param params The params for the smart contract call
+     * @returns The call result
+     */
+    didVote: async (params: CallParams<PollManagerArgs['obj']['did_vote(uint64,address)bool'] | PollManagerArgs['tuple']['did_vote(uint64,address)bool']> & SendParams & {onComplete?: OnApplicationComplete.NoOpOC}) => {
+      const result = await this.appClient.send.call(PollManagerParamsFactory.didVote(params))
+      return {...result, return: result.return as unknown as (undefined | PollManagerReturns['did_vote(uint64,address)bool'])}
+    },
+
   }
 
   /**
@@ -485,6 +921,50 @@ export class PollManagerClient {
    * Methods to access state for the current PollManager app
    */
   state = {
+    /**
+     * Methods to access global state for the current PollManager app
+     */
+    global: {
+      /**
+       * Get all current keyed values from global state
+       */
+      getAll: async (): Promise<Partial<Expand<GlobalKeysState>>> => {
+        const result = await this.appClient.state.global.getAll()
+        return {
+          nextPollId: result.next_poll_id,
+        }
+      },
+      /**
+       * Get the current value of the next_poll_id key in global state
+       */
+      nextPollId: async (): Promise<bigint | undefined> => { return (await this.appClient.state.global.getValue("next_poll_id")) as bigint | undefined },
+    },
+    /**
+     * Methods to access box state for the current PollManager app
+     */
+    box: {
+      /**
+       * Get all current keyed values from box state
+       */
+      getAll: async (): Promise<Partial<Expand<BoxKeysState>>> => {
+        const result = await this.appClient.state.box.getAll()
+        return {
+        }
+      },
+      /**
+       * Get values from the box_map_struct map in box state
+       */
+      boxMapStruct: {
+        /**
+         * Get all current values of the box_map_struct map in box state
+         */
+        getMap: async (): Promise<Map<bigint, PollData>> => { return (await this.appClient.state.box.getMap("box_map_struct")) as Map<bigint, PollData> },
+        /**
+         * Get a current value of the box_map_struct map by key from box state
+         */
+        value: async (key: bigint | number): Promise<PollData | undefined> => { return await this.appClient.state.box.getMapValue("box_map_struct", key) as PollData | undefined },
+      },
+    },
   }
 
   public newGroup(): PollManagerComposer {
@@ -499,6 +979,62 @@ export class PollManagerClient {
       hello(params: CallParams<PollManagerArgs['obj']['hello(string)string'] | PollManagerArgs['tuple']['hello(string)string']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
         promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.hello(params)))
         resultMappers.push((v) => client.decodeReturnValue('hello(string)string', v))
+        return this
+      },
+      /**
+       * Add a create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void method call against the PollManager contract
+       */
+      createPoll(params: CallParams<PollManagerArgs['obj']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'] | PollManagerArgs['tuple']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
+        promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.createPoll(params)))
+        resultMappers.push(undefined)
+        return this
+      },
+      /**
+       * Add a vote_option_1(uint64,address)void method call against the PollManager contract
+       */
+      voteOption_1(params: CallParams<PollManagerArgs['obj']['vote_option_1(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_1(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
+        promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.voteOption_1(params)))
+        resultMappers.push(undefined)
+        return this
+      },
+      /**
+       * Add a vote_option_2(uint64,address)void method call against the PollManager contract
+       */
+      voteOption_2(params: CallParams<PollManagerArgs['obj']['vote_option_2(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_2(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
+        promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.voteOption_2(params)))
+        resultMappers.push(undefined)
+        return this
+      },
+      /**
+       * Add a vote_option_3(uint64,address)void method call against the PollManager contract
+       */
+      voteOption_3(params: CallParams<PollManagerArgs['obj']['vote_option_3(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_3(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
+        promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.voteOption_3(params)))
+        resultMappers.push(undefined)
+        return this
+      },
+      /**
+       * Add a vote_option_4(uint64,address)void method call against the PollManager contract
+       */
+      voteOption_4(params: CallParams<PollManagerArgs['obj']['vote_option_4(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_4(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
+        promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.voteOption_4(params)))
+        resultMappers.push(undefined)
+        return this
+      },
+      /**
+       * Add a vote_option_5(uint64,address)void method call against the PollManager contract
+       */
+      voteOption_5(params: CallParams<PollManagerArgs['obj']['vote_option_5(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_5(uint64,address)void']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
+        promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.voteOption_5(params)))
+        resultMappers.push(undefined)
+        return this
+      },
+      /**
+       * Add a did_vote(uint64,address)bool method call against the PollManager contract
+       */
+      didVote(params: CallParams<PollManagerArgs['obj']['did_vote(uint64,address)bool'] | PollManagerArgs['tuple']['did_vote(uint64,address)bool']> & {onComplete?: OnApplicationComplete.NoOpOC}) {
+        promiseChain = promiseChain.then(async () => composer.addAppCallMethodCall(await client.params.didVote(params)))
+        resultMappers.push((v) => client.decodeReturnValue('did_vote(uint64,address)bool', v))
         return this
       },
       /**
@@ -544,6 +1080,69 @@ export type PollManagerComposer<TReturns extends [...any[]] = []> = {
    * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
    */
   hello(params?: CallParams<PollManagerArgs['obj']['hello(string)string'] | PollManagerArgs['tuple']['hello(string)string']>): PollManagerComposer<[...TReturns, PollManagerReturns['hello(string)string'] | undefined]>
+
+  /**
+   * Calls the create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  createPoll(params?: CallParams<PollManagerArgs['obj']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'] | PollManagerArgs['tuple']['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void']>): PollManagerComposer<[...TReturns, PollManagerReturns['create_poll((string,string,string,string,string,string,uint64,uint64,uint64,uint64,uint64,address[]))void'] | undefined]>
+
+  /**
+   * Calls the vote_option_1(uint64,address)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  voteOption_1(params?: CallParams<PollManagerArgs['obj']['vote_option_1(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_1(uint64,address)void']>): PollManagerComposer<[...TReturns, PollManagerReturns['vote_option_1(uint64,address)void'] | undefined]>
+
+  /**
+   * Calls the vote_option_2(uint64,address)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  voteOption_2(params?: CallParams<PollManagerArgs['obj']['vote_option_2(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_2(uint64,address)void']>): PollManagerComposer<[...TReturns, PollManagerReturns['vote_option_2(uint64,address)void'] | undefined]>
+
+  /**
+   * Calls the vote_option_3(uint64,address)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  voteOption_3(params?: CallParams<PollManagerArgs['obj']['vote_option_3(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_3(uint64,address)void']>): PollManagerComposer<[...TReturns, PollManagerReturns['vote_option_3(uint64,address)void'] | undefined]>
+
+  /**
+   * Calls the vote_option_4(uint64,address)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  voteOption_4(params?: CallParams<PollManagerArgs['obj']['vote_option_4(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_4(uint64,address)void']>): PollManagerComposer<[...TReturns, PollManagerReturns['vote_option_4(uint64,address)void'] | undefined]>
+
+  /**
+   * Calls the vote_option_5(uint64,address)void ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  voteOption_5(params?: CallParams<PollManagerArgs['obj']['vote_option_5(uint64,address)void'] | PollManagerArgs['tuple']['vote_option_5(uint64,address)void']>): PollManagerComposer<[...TReturns, PollManagerReturns['vote_option_5(uint64,address)void'] | undefined]>
+
+  /**
+   * Calls the did_vote(uint64,address)bool ABI method.
+   *
+   * @param args The arguments for the contract call
+   * @param params Any additional parameters for the call
+   * @returns The typed transaction composer so you can fluently chain multiple calls or call execute to execute all queued up transactions
+   */
+  didVote(params?: CallParams<PollManagerArgs['obj']['did_vote(uint64,address)bool'] | PollManagerArgs['tuple']['did_vote(uint64,address)bool']>): PollManagerComposer<[...TReturns, PollManagerReturns['did_vote(uint64,address)bool'] | undefined]>
 
   /**
    * Makes a clear_state call to an existing instance of the PollManager smart contract.

@@ -5,6 +5,11 @@ import App from './App'
 import ErrorBoundary from './components/template/ErrorBoundary'
 import './index.css'
 
+import { Config } from '@algorandfoundation/algokit-utils'
+Config.configure({
+  debug: true,
+})
+
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <ErrorBoundary>
