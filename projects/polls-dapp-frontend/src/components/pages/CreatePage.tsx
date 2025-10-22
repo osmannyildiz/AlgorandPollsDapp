@@ -104,11 +104,8 @@ function CreatePage() {
         })
         console.log('response', response)
 
-        fetchPolls().catch((err) => {
-          console.error('Error fetching polls:', err)
-          enqueueSnackbar('Failed to fetch polls. Please try again.', { variant: 'error' })
-        })
         navigate('/')
+        // Home page will refetch polls on mount
       } catch (err) {
         console.error('Error creating poll:', err)
         enqueueSnackbar('Failed to create poll. Please try again.', { variant: 'error' })

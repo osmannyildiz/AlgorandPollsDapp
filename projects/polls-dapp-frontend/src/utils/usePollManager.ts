@@ -40,7 +40,8 @@ export function usePollManager() {
         return
       }
 
-      setPolls(Array.from(response.values()).sort((a, b) => Number(b.id) - Number(a.id)))
+      const newPolls = Array.from(response.values()).sort((a, b) => Number(b.id) - Number(a.id))
+      setPolls(newPolls)
     } catch (error) {
       console.error('Error fetching polls:', error)
       throw error
@@ -58,9 +59,40 @@ export function usePollManager() {
     [getAppClient],
   )
 
+  const vote = useCallback(
+    async (pollId: bigint, option: number) => {
+      const appClient = await getAppClient()
+
+      let methodToCall
+      switch (option) {
+        case 1:
+          methodToCall = appClient.send.voteOption_1
+          break
+        case 2:
+          methodToCall = appClient.send.voteOption_2
+          break
+        case 3:
+          methodToCall = appClient.send.voteOption_3
+          break
+        case 4:
+          methodToCall = appClient.send.voteOption_4
+          break
+        case 5:
+          methodToCall = appClient.send.voteOption_5
+          break
+        default:
+          throw new Error('Invalid option')
+      }
+
+      const response = await methodToCall({ args: { pollId, caller: activeAddress ?? '' } })
+      return response
+    },
+    [getAppClient],
+  )
+
   useEffect(() => {
     algorand.setDefaultSigner(transactionSigner)
   }, [transactionSigner])
 
-  return { getAppClient, polls, isFetchingPolls, fetchPolls, createPoll }
+  return { getAppClient, polls, isFetchingPolls, fetchPolls, createPoll, vote }
 }

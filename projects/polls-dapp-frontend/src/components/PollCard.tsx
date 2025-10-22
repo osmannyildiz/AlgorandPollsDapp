@@ -1,35 +1,38 @@
 import { useWallet } from '@txnlab/use-wallet-react'
 import { Check, Users } from 'lucide-react'
+import { enqueueSnackbar } from 'notistack'
 import { useCallback, useMemo, useState } from 'react'
 import { PollData } from '../contracts/PollManager'
-
-interface Option {
-  id: string
-  text: string
-  votes: number
-}
-
-interface Poll {
-  id: string
-  question: string
-  options: Option[]
-  totalVotes: number
-  votedOptionId: string | null
-}
+import { usePollManager } from '../utils/usePollManager'
 
 interface PollCardProps {
   poll: PollData
-  onVote: (pollId: string, optionId: string) => void
 }
 
-function PollCard({ poll, onVote }: PollCardProps) {
+function PollCard({ poll }: PollCardProps) {
   const { activeAddress } = useWallet()
+  const { vote, fetchPolls } = usePollManager()
 
-  const [selectedOption, setSelectedOption] = useState<string | null>(null)
+  const [selectedOption, setSelectedOption] = useState<1 | 2 | 3 | 4 | 5 | null>(null)
+  const [isVoting, setIsVoting] = useState(false)
 
-  const handleVote = () => {
-    if (selectedOption && !hasVoted) {
-      // onVote(poll.id, selectedOption)
+  const handleVote = async () => {
+    if (!selectedOption || !activeAddress || hasVoted) {
+      return
+    }
+
+    setIsVoting(true)
+    try {
+      const response = await vote(poll.id, selectedOption)
+      console.log('response', response)
+
+      fetchPolls().catch((err) => {
+        enqueueSnackbar(`Failed to fetch polls. Please try again.`, { variant: 'error' })
+      })
+    } catch (err) {
+      enqueueSnackbar(`Failed to submit vote. Please try again.`, { variant: 'error' })
+    } finally {
+      setIsVoting(false)
     }
   }
 
@@ -45,16 +48,16 @@ function PollCard({ poll, onVote }: PollCardProps) {
 
   const options = useMemo(
     () => [
-      { id: 'option1', text: poll.option_1, votes: Number(poll.option_1Votes) },
-      { id: 'option2', text: poll.option_2, votes: Number(poll.option_2Votes) },
-      { id: 'option3', text: poll.option_3, votes: Number(poll.option_3Votes) },
-      { id: 'option4', text: poll.option_4, votes: Number(poll.option_4Votes) },
-      { id: 'option5', text: poll.option_5, votes: Number(poll.option_5Votes) },
+      { id: 1 as const, text: poll.option_1, votes: Number(poll.option_1Votes) },
+      { id: 2 as const, text: poll.option_2, votes: Number(poll.option_2Votes) },
+      { id: 3 as const, text: poll.option_3, votes: Number(poll.option_3Votes) },
+      { id: 4 as const, text: poll.option_4, votes: Number(poll.option_4Votes) },
+      { id: 5 as const, text: poll.option_5, votes: Number(poll.option_5Votes) },
     ],
     [poll],
   )
 
-  const hasVoted = useMemo(() => poll.voters.includes(activeAddress ?? ''), [poll.voters, activeAddress])
+  const hasVoted = useMemo(() => activeAddress && poll.voters.includes(activeAddress), [poll.voters, activeAddress])
 
   return (
     <div className="backdrop-blur-md bg-white/40 border border-white/60 rounded-2xl p-6 shadow-xl transition-shadow duration-300 hover:shadow-2xl flex flex-col">
@@ -124,10 +127,10 @@ function PollCard({ poll, onVote }: PollCardProps) {
         {!hasVoted && (
           <button
             onClick={handleVote}
-            disabled={!selectedOption || !activeAddress}
+            disabled={!selectedOption || !activeAddress || isVoting}
             className="px-6 py-2 rounded-lg font-semibold transition-all duration-300 bg-gradient-to-r from-violet-500 to-purple-600 text-white shadow-lg shadow-violet-500/50 hover:shadow-xl hover:scale-105 disabled:from-gray-300 disabled:to-gray-300 disabled:shadow-none disabled:text-gray-500 disabled:cursor-not-allowed"
           >
-            {activeAddress ? 'Vote' : 'Connect wallet to vote'}
+            {activeAddress ? (isVoting ? 'Voting...' : 'Vote') : 'Connect wallet to vote'}
           </button>
         )}
         {hasVoted && <span className="text-sm font-semibold text-violet-600 bg-violet-100 px-4 py-2 rounded-lg">Voted</span>}

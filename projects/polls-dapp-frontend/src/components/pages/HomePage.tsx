@@ -13,11 +13,7 @@ interface Option {
   votes: number
 }
 
-interface HomePageProps {
-  onVote: (pollId: string, optionId: string) => Promise<void>
-}
-
-function HomePage({ onVote }: HomePageProps) {
+function HomePage() {
   const { activeAddress } = useWallet()
   const { getAppClient, fetchPolls, isFetchingPolls, polls } = usePollManager()
 
@@ -67,7 +63,7 @@ function HomePage({ onVote }: HomePageProps) {
 
   useEffect(() => {
     fetchPolls().catch((err) => {
-      enqueueSnackbar(`Failed to load polls. Please try again.`, { variant: 'error' })
+      enqueueSnackbar(`Failed to fetch polls. Please try again.`, { variant: 'error' })
     })
   }, [fetchPolls])
 
@@ -123,7 +119,7 @@ function HomePage({ onVote }: HomePageProps) {
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {polls.map((poll) => (
-            <PollCard key={poll.id} poll={poll} onVote={onVote} />
+            <PollCard key={poll.id} poll={poll} />
           ))}
         </div>
       )}

@@ -8,28 +8,6 @@ import Home from './components/template/Home'
 export default function App() {
   const location = useLocation()
 
-  const handleVote = async (pollId: string, optionId: string): Promise<void> => {
-    try {
-      await new Promise((resolve) => setTimeout(resolve, 600))
-
-      // const updatedPolls = polls.map((poll) => {
-      //   if (poll.id === pollId && !poll.votedOptionId) {
-      //     return {
-      //       ...poll,
-      //       votedOptionId: optionId,
-      //       totalVotes: poll.totalVotes + 1,
-      //       options: poll.options.map((opt) => (opt.id === optionId ? { ...opt, votes: opt.votes + 1 } : opt)),
-      //     }
-      //   }
-      //   return poll
-      // })
-
-      // setPolls(updatedPolls)
-    } catch (err) {
-      throw new Error('Failed to submit vote. Please try again.')
-    }
-  }
-
   const isActive = (path: string) => location.pathname === path
 
   return (
@@ -84,7 +62,7 @@ export default function App() {
       {/* Main Content */}
       <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <Routes>
-          <Route path="/" element={<HomePage onVote={handleVote} />} />
+          <Route path="/" element={<HomePage />} />
           <Route path="/create" element={<CreatePage />} />
           <Route path="/template" element={<Home />} />
         </Routes>
