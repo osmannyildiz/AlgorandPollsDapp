@@ -24,7 +24,6 @@ function PollCard({ poll }: PollCardProps) {
     setIsVoting(true)
     try {
       const response = await vote(poll.id, selectedOption)
-      console.log('response', response)
 
       fetchPolls().catch((err) => {
         enqueueSnackbar(`Failed to fetch polls. Please try again.`, { variant: 'error' })

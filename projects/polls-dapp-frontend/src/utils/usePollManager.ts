@@ -1,6 +1,7 @@
 import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet-react'
-import { useCallback, useEffect, useState } from 'react'
+import { useCallback, useEffect } from 'react'
+import { usePollsContext } from '../contexts/PollsContext'
 import { POLL_MANAGER_CREATOR_ADDRESS } from '../contracts/config'
 import { PollData, PollManagerClient } from '../contracts/PollManager'
 import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from './network/getAlgoClientConfigs'
@@ -14,9 +15,7 @@ const algorand = AlgorandClient.fromConfig({
 
 export function usePollManager() {
   const { transactionSigner, activeAddress } = useWallet()
-
-  const [polls, setPolls] = useState<PollData[]>([])
-  const [isFetchingPolls, setIsFetchingPolls] = useState(false)
+  const { polls, setPolls, isFetchingPolls, setIsFetchingPolls } = usePollsContext()
 
   const getAppClient = useCallback(async () => {
     const appClient = await PollManagerClient.fromCreatorAndName({
@@ -28,12 +27,10 @@ export function usePollManager() {
   }, [activeAddress])
 
   const fetchPolls = useCallback(async () => {
-    console.log('fetchPolls')
     setIsFetchingPolls(true)
     try {
       const appClient = await getAppClient()
       const response = await appClient.state.box.boxMapStruct.getMap()
-      console.log('polls response', Array.from(response.values()))
 
       if (!response) {
         setIsFetchingPolls(false)
@@ -54,6 +51,7 @@ export function usePollManager() {
     async (pollData: PollData) => {
       const appClient = await getAppClient()
       const response = await appClient.send.createPoll({ args: { pollData } })
+      console.log('createPoll response', response)
       return response
     },
     [getAppClient],
@@ -85,6 +83,7 @@ export function usePollManager() {
       }
 
       const response = await methodToCall({ args: { pollId, caller: activeAddress ?? '' } })
+      console.log('vote response', response)
       return response
     },
     [getAppClient],

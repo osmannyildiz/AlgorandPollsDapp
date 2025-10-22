@@ -7,7 +7,7 @@ import Spinner from '../Spinner'
 
 function CreatePage() {
   const navigate = useNavigate()
-  const { createPoll, fetchPolls } = usePollManager()
+  const { createPoll } = usePollManager()
 
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState(['', ''])
@@ -102,7 +102,6 @@ function CreatePage() {
           //   },
           // },
         })
-        console.log('response', response)
 
         navigate('/')
         // Home page will refetch polls on mount
