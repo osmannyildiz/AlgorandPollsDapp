@@ -1,12 +1,9 @@
-import { AlgorandClient } from '@algorandfoundation/algokit-utils'
 import { useWallet } from '@txnlab/use-wallet-react'
 import { PlusCircle } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
-import { useEffect } from 'react'
+import { useCallback, useEffect } from 'react'
 import { Link } from 'react-router-dom'
-import { POLL_MANAGER_CREATOR_ADDRESS } from '../../contracts/config'
-import { PollData, PollManagerClient } from '../../contracts/PollManager'
-import { getAlgodConfigFromViteEnvironment, getIndexerConfigFromViteEnvironment } from '../../utils/network/getAlgoClientConfigs'
+import { usePollManager } from '../../utils/usePollManager'
 import PollCard from '../PollCard'
 import PollSkeleton from '../PollSkeleton'
 
@@ -16,69 +13,16 @@ interface Option {
   votes: number
 }
 
-interface Poll {
-  id: string
-  question: string
-  options: Option[]
-  totalVotes: number
-  votedOptionId: string | null
-}
-
 interface HomePageProps {
-  polls: PollData[]
   onVote: (pollId: string, optionId: string) => Promise<void>
-  isLoading: boolean
-  setPolls: (polls: PollData[]) => void
-  setIsLoading: (isLoading: boolean) => void
 }
 
-function HomePage({ polls, onVote, isLoading, setPolls, setIsLoading }: HomePageProps) {
-  const { transactionSigner, activeAddress } = useWallet()
+function HomePage({ onVote }: HomePageProps) {
+  const { activeAddress } = useWallet()
+  const { getAppClient, fetchPolls, isFetchingPolls, polls } = usePollManager()
 
-  const algodConfig = getAlgodConfigFromViteEnvironment()
-  const indexerConfig = getIndexerConfigFromViteEnvironment()
-  const algorand = AlgorandClient.fromConfig({
-    algodConfig,
-    indexerConfig,
-  })
-  algorand.setDefaultSigner(transactionSigner)
-
-  const fetchPolls = async () => {
-    setIsLoading(true)
-    try {
-      const appClient = await PollManagerClient.fromCreatorAndName({
-        creatorAddress: POLL_MANAGER_CREATOR_ADDRESS,
-        defaultSender: activeAddress ?? undefined,
-        algorand,
-      })
-
-      const response = await appClient.state.box.boxMapStruct.getMap().catch((e: Error) => {
-        enqueueSnackbar(`Error getting the polls: ${e.message}`, { variant: 'error' })
-        return
-      })
-
-      if (!response) {
-        return
-      }
-
-      setPolls(Array.from(response.values()))
-    } catch (err) {
-      enqueueSnackbar(`Failed to load polls. Please try again.`, { variant: 'error' })
-    } finally {
-      setIsLoading(false)
-    }
-  }
-
-  useEffect(() => {
-    fetchPolls()
-  }, [])
-
-  const runHelloContract = async () => {
-    const appClient = await PollManagerClient.fromCreatorAndName({
-      creatorAddress: POLL_MANAGER_CREATOR_ADDRESS,
-      defaultSender: activeAddress ?? undefined,
-      algorand,
-    })
+  const runHelloContract = useCallback(async () => {
+    const appClient = await getAppClient()
 
     const response = await appClient.send.hello({ args: { name: 'Osman' } }).catch((e: Error) => {
       enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
@@ -97,64 +41,10 @@ function HomePage({ polls, onVote, isLoading, setPolls, setIsLoading }: HomePage
     }
 
     enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
-  }
+  }, [getAppClient])
 
-  const runCreatePoll = async () => {
-    const appClient = await PollManagerClient.fromCreatorAndName({
-      creatorAddress: POLL_MANAGER_CREATOR_ADDRESS,
-      defaultSender: activeAddress ?? undefined,
-      algorand,
-    })
-
-    const response = await appClient.send
-      .createPoll({
-        args: {
-          pollData: {
-            question: 'What is the capital of France?',
-            option_1: 'Paris',
-            option_2: 'London',
-            option_3: 'Berlin',
-            option_4: 'Madrid',
-            option_5: 'Rome',
-            option_1Votes: 0n,
-            option_2Votes: 0n,
-            option_3Votes: 0n,
-            option_4Votes: 0n,
-            option_5Votes: 0n,
-            voters: [],
-          },
-        },
-        // args: {
-        //   pollDataInput: {
-        //     question: 'What is the capital of France?',
-        //     option_1: 'Paris',
-        //     option_2: 'London',
-        //     option_3: 'Berlin',
-        //     option_4: 'Madrid',
-        //     option_5: 'Rome',
-        //   },
-        // },
-      })
-      .catch((e: Error) => {
-        enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
-        return
-      })
-
-    appClient.state.box.boxMapStruct.getMap()
-
-    if (!response) {
-      return
-    }
-
-    enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
-  }
-
-  const test = async () => {
-    const appClient = await PollManagerClient.fromCreatorAndName({
-      creatorAddress: POLL_MANAGER_CREATOR_ADDRESS,
-      defaultSender: activeAddress ?? undefined,
-      algorand,
-    })
+  const test = useCallback(async () => {
+    const appClient = await getAppClient()
 
     // const response = await appClient.state.box.boxMapStruct.getMap().catch((e: Error) => {
     //   enqueueSnackbar(`Error getting the poll: ${e.message}`, { variant: 'error' })
@@ -173,11 +63,15 @@ function HomePage({ polls, onVote, isLoading, setPolls, setIsLoading }: HomePage
     }
 
     enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
+  }, [getAppClient])
 
-    // await algorand.account.ensureFundedFromEnvironment('ADGHAQ5N6NGIWMLDC3JJH3757PLQZG6BFSMTQD3DVIKA6T6DXVMLD5TGMM', algo(10))
-  }
+  useEffect(() => {
+    fetchPolls().catch((err) => {
+      enqueueSnackbar(`Failed to load polls. Please try again.`, { variant: 'error' })
+    })
+  }, [fetchPolls])
 
-  if (isLoading) {
+  if (isFetchingPolls) {
     return (
       <div>
         <div className="mb-8">
@@ -208,13 +102,6 @@ function HomePage({ polls, onVote, isLoading, setPolls, setIsLoading }: HomePage
         </button>
         <button
           type="button"
-          onClick={() => runCreatePoll()}
-          className="mt-4 flex items-center gap-2 px-4 py-2 bg-violet-500/20 hover:bg-violet-500/30 text-violet-700 rounded-xl transition-all duration-300 backdrop-blur-sm border border-violet-300/50 font-medium disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          Run Create Poll
-        </button>
-        <button
-          type="button"
           onClick={() => test()}
           className="mt-4 flex items-center gap-2 px-4 py-2 bg-violet-500/20 hover:bg-violet-500/30 text-violet-700 rounded-xl transition-all duration-300 backdrop-blur-sm border border-violet-300/50 font-medium disabled:cursor-not-allowed disabled:opacity-50"
         >
@@ -236,7 +123,7 @@ function HomePage({ polls, onVote, isLoading, setPolls, setIsLoading }: HomePage
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {polls.map((poll) => (
-            <PollCard key={poll.question} poll={poll} onVote={onVote} />
+            <PollCard key={poll.id} poll={poll} onVote={onVote} />
           ))}
         </div>
       )}

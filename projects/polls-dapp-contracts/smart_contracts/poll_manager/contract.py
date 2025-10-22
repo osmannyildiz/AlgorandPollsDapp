@@ -2,6 +2,7 @@ from algopy import arc4, ARC4Contract, BoxMap, String
 
 
 class PollData(arc4.Struct, frozen=False):
+    id: arc4.UInt64
     question: arc4.String
     option_1: arc4.String
     option_2: arc4.String
@@ -30,6 +31,7 @@ class PollManager(ARC4Contract):
         self,
         poll_data: PollData,
     ) -> None:
+        poll_data.id = self.next_poll_id
         self.box_map_struct[self.next_poll_id] = poll_data.copy()
         self.next_poll_id = arc4.UInt64(self.next_poll_id.native + 1)
 

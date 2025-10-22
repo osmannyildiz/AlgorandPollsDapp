@@ -1,13 +1,14 @@
 import { Plus, Sparkles, X } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
 import { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom'
+import { usePollManager } from '../../utils/usePollManager'
 import Spinner from '../Spinner'
 
-interface CreatePageProps {
-  onCreatePoll: (question: string, options: string[]) => Promise<void>
-}
+function CreatePage() {
+  const navigate = useNavigate()
+  const { createPoll, fetchPolls } = usePollManager()
 
-function CreatePage({ onCreatePoll }: CreatePageProps) {
   const [question, setQuestion] = useState('')
   const [options, setOptions] = useState(['', ''])
   const [errors, setErrors] = useState<{ question?: string; options?: string }>({})
@@ -76,9 +77,41 @@ function CreatePage({ onCreatePoll }: CreatePageProps) {
       setIsCreating(true)
       try {
         const filledOptions = options.filter((opt) => opt.trim())
-        await onCreatePoll(question.trim(), filledOptions)
+        const response = await createPoll({
+          id: 0n,
+          question: question.trim(),
+          option_1: filledOptions[0] ?? '',
+          option_2: filledOptions[1] ?? '',
+          option_3: filledOptions[2] ?? '',
+          option_4: filledOptions[3] ?? '',
+          option_5: filledOptions[4] ?? '',
+          option_1Votes: 0n,
+          option_2Votes: 0n,
+          option_3Votes: 0n,
+          option_4Votes: 0n,
+          option_5Votes: 0n,
+          voters: [],
+          // args: {
+          //   pollDataInput: {
+          //     question: 'What is the capital of France?',
+          //     option_1: 'Paris',
+          //     option_2: 'London',
+          //     option_3: 'Berlin',
+          //     option_4: 'Madrid',
+          //     option_5: 'Rome',
+          //   },
+          // },
+        })
+        console.log('response', response)
+
+        fetchPolls().catch((err) => {
+          console.error('Error fetching polls:', err)
+          enqueueSnackbar('Failed to fetch polls. Please try again.', { variant: 'error' })
+        })
+        navigate('/')
       } catch (err) {
-        enqueueSnackbar(err instanceof Error ? err.message : 'Failed to create poll. Please try again.', { variant: 'error' })
+        console.error('Error creating poll:', err)
+        enqueueSnackbar('Failed to create poll. Please try again.', { variant: 'error' })
       } finally {
         setIsCreating(false)
       }
