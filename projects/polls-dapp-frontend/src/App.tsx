@@ -30,7 +30,7 @@ export default function App() {
                   <span className="text-white font-bold text-xl">P</span>
                 </div>
                 <span className="text-2xl font-bold bg-gradient-to-r from-violet-600 to-purple-600 bg-clip-text text-transparent">
-                  Polls
+                  Polls Dapp
                 </span>
               </div>
               <div className="flex space-x-2">

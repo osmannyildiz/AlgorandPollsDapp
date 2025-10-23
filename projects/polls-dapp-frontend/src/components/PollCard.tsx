@@ -1,3 +1,4 @@
+import type { LogicError } from '@algorandfoundation/algokit-utils/types/logic-error'
 import { useWallet } from '@txnlab/use-wallet-react'
 import { Check, Users } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
@@ -29,7 +30,8 @@ function PollCard({ poll }: PollCardProps) {
         enqueueSnackbar(`Failed to fetch polls. Please try again.`, { variant: 'error' })
       })
     } catch (err) {
-      enqueueSnackbar(`Failed to submit vote. Please try again.`, { variant: 'error' })
+      console.error('Error submitting vote:', err)
+      enqueueSnackbar((err as LogicError).message || 'Failed to submit vote. Please try again.', { variant: 'error' })
     } finally {
       setIsVoting(false)
     }
@@ -64,6 +66,8 @@ function PollCard({ poll }: PollCardProps) {
 
       <div className="space-y-3 mb-6 flex-grow">
         {options.map((option) => {
+          if (!option.text) return
+
           const percentage = getPercentage(option.votes)
           const isSelected = selectedOption === option.id
           // const isVotedOption = poll.votedOptionId === option.id

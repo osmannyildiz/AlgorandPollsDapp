@@ -1,3 +1,4 @@
+import type { LogicError } from '@algorandfoundation/algokit-utils/types/logic-error'
 import { useWallet } from '@txnlab/use-wallet-react'
 import { PlusCircle } from 'lucide-react'
 import { enqueueSnackbar } from 'notistack'
@@ -17,48 +18,15 @@ function HomePage() {
   const { activeAddress } = useWallet()
   const { getAppClient, fetchPolls, isFetchingPolls, polls } = usePollManager()
 
-  const runHelloContract = useCallback(async () => {
-    const appClient = await getAppClient()
-
-    const response = await appClient.send.hello({ args: { name: 'Osman' } }).catch((e: Error) => {
-      enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
-      return
-    })
-
-    // appClient.state.getPoll({ args: { pollId: '1' } }).catch((e: Error) => {
-    //   enqueueSnackbar(`Error getting the poll: ${e.message}`, { variant: 'error' })
-    //   return
-    // })
-
-    // appClient.state.
-
-    if (!response) {
-      return
+  const testTheContract = useCallback(async () => {
+    try {
+      const appClient = await getAppClient()
+      const response = await appClient.send.hello({ args: { name: 'developer' } })
+      enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
+    } catch (err) {
+      console.error('Error calling the contract:', err)
+      enqueueSnackbar((err as LogicError).message || 'Error calling the contract. See console for details.', { variant: 'error' })
     }
-
-    enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
-  }, [getAppClient])
-
-  const test = useCallback(async () => {
-    const appClient = await getAppClient()
-
-    // const response = await appClient.state.box.boxMapStruct.getMap().catch((e: Error) => {
-    //   enqueueSnackbar(`Error getting the poll: ${e.message}`, { variant: 'error' })
-    //   return
-    // })
-
-    const response = await appClient.send.voteOption_2({ args: { pollId: 1, caller: activeAddress ?? '' } }).catch((e: Error) => {
-      enqueueSnackbar(`Error calling the contract: ${e.message}`, { variant: 'error' })
-      return
-    })
-
-    console.log(response)
-
-    if (!response) {
-      return
-    }
-
-    enqueueSnackbar(`Response from the contract: ${response.return}`, { variant: 'success' })
   }, [getAppClient])
 
   useEffect(() => {
@@ -91,17 +59,10 @@ function HomePage() {
         <p className="text-gray-600">Vote on polls or create your own</p>
         <button
           type="button"
-          onClick={() => runHelloContract()}
+          onClick={() => testTheContract()}
           className="mt-4 flex items-center gap-2 px-4 py-2 bg-violet-500/20 hover:bg-violet-500/30 text-violet-700 rounded-xl transition-all duration-300 backdrop-blur-sm border border-violet-300/50 font-medium disabled:cursor-not-allowed disabled:opacity-50"
         >
-          Run Hello Contract
-        </button>
-        <button
-          type="button"
-          onClick={() => test()}
-          className="mt-4 flex items-center gap-2 px-4 py-2 bg-violet-500/20 hover:bg-violet-500/30 text-violet-700 rounded-xl transition-all duration-300 backdrop-blur-sm border border-violet-300/50 font-medium disabled:cursor-not-allowed disabled:opacity-50"
-        >
-          test
+          Test the Contract
         </button>
       </div>
 

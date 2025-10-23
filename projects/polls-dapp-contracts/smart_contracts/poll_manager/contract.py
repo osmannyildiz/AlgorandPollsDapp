@@ -50,18 +50,21 @@ class PollManager(ARC4Contract):
     @arc4.abimethod
     def vote_option_3(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
         assert not self.did_vote(poll_id, caller), "Already voted"
+        assert self.box_map_struct[poll_id].option_3 != "", "Option doesn't exist in this poll"
         self.box_map_struct[poll_id].option_3_votes = arc4.UInt64(self.box_map_struct[poll_id].option_3_votes.native + 1)
         self.box_map_struct[poll_id].voters.append(caller)
 
     @arc4.abimethod
     def vote_option_4(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
         assert not self.did_vote(poll_id, caller), "Already voted"
+        assert self.box_map_struct[poll_id].option_4 != "", "Option doesn't exist in this poll"
         self.box_map_struct[poll_id].option_4_votes = arc4.UInt64(self.box_map_struct[poll_id].option_4_votes.native + 1)
         self.box_map_struct[poll_id].voters.append(caller)
 
     @arc4.abimethod
     def vote_option_5(self, poll_id: arc4.UInt64, caller: arc4.Address) -> None:
         assert not self.did_vote(poll_id, caller), "Already voted"
+        assert self.box_map_struct[poll_id].option_5 != "", "Option doesn't exist in this poll"
         self.box_map_struct[poll_id].option_5_votes = arc4.UInt64(self.box_map_struct[poll_id].option_5_votes.native + 1)
         self.box_map_struct[poll_id].voters.append(caller)
 
