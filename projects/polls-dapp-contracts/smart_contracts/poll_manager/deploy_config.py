@@ -36,6 +36,8 @@ def deploy() -> None:
             )
         )
 
+    logger.info(f"DEPLOYER ADDRESS: {deployer_.address}")
+
     name = "world"
     response = app_client.send.hello(args=HelloArgs(name=name))
     logger.info(
