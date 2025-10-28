@@ -78,7 +78,7 @@ A decentralized voting application built on Algorand blockchain.
 - Instead of using `algokit project run build` to build all projects (including frontend, which can take a long time), you can use `algokit project run build -t contract` to build only the contracts.
 - You can use `algokit localnet console` to interact with the localnet node running on Docker. Inside it, you can use the `goal` command for various tasks.
   - `goal wallet list`: Lists wallets on the localnet.
-  - `goal account list -w DEPLOYER`: Gives the address of the default deployer wallet.
+  - `goal account list -w DEPLOYER`: Gives the address of the default deployer account.
   - `goal account balance -a <ADDRESS>`: Shows the balance of an account.
 - On localnet, you can fund your new accounts from the explorer's [Fund page](https://lora.algokit.io/localnet/fund).
 - Use `algokit localnet reset` to erase and restart the localnet node.
